@@ -43,8 +43,8 @@ k_pot = [205, 125, 79, 69, 56, 47, 38, 32, 28, 26,
 def generate_table(values):
     res = []
     for i, m in enumerate(values):
-        for n in values[i:]:
-            res.append(((m, n), m*n, abs(m - n)))
+        for j, n in enumerate(values[i:]):
+            res.append(((m, n), m*n, abs(m - n), (i + 1, j + i + 1)))   
     return res
 
 

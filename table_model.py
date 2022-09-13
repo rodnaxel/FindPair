@@ -4,7 +4,7 @@ from PySide2.QtGui import QColor
 
 class CustomTableModel(QAbstractTableModel):
 
-    section_names = ("Gain", "K1 x K2", "K1", "K2", "|Gain - K2 x K1|")
+    section_names = ("Gain", "K1 x K2", "K1", "K2", "|Gain - K2 x K1|", "Step 1", "Step 2")
 
     def __init__(self, data=None):
         QAbstractTableModel.__init__(self)
@@ -18,7 +18,9 @@ class CustomTableModel(QAbstractTableModel):
         self.gains_c  = data[1]
         self.k1 = data[2]
         self.k2 = data[3]
-        self.diff = data[4] 
+        self.diff = data[4]
+        self.s1 = data[5]
+        self.s2 = data[6] 
 
         self.modelReset.emit()
 

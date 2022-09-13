@@ -30,14 +30,14 @@ def find_pair(gain, table, delta):
     near = get_nearest_value(b, gain)
     index = b.index(near)
     res = a[index]
-    return res[0]
+    return res[0], res[3]
 
 def get_amplifier_pairs(gains, deltas, table):
     result = []
     for gain in gains:
-        k1, k2 = find_pair(gain, table, deltas)
+        (k1, k2), (s1,s2) = find_pair(gain, table, deltas)
         delta = gain - k1 * k2
-        result.append((k1, k2, k1 * k2, gain - k1 * k2))
+        result.append((k1, k2, k1 * k2, gain - k1 * k2, s1, s2))
     return result
 
 
@@ -91,7 +91,9 @@ class MainWindow(QMainWindow):
             [x[2] for x in result],
             [x[0] for x in result],
             [x[1] for x in result],
-            [x[3] for x in result]
+            [x[3] for x in result],
+            [x[4] for x in result],
+            [x[5] for x in result]
         ]
         self.model = CustomTableModel(self._data)
         self.ui.tableView.setModel(self.model)
