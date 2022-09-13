@@ -1,0 +1,10 @@
+__pycache__/
+build/
+dist/
+
+*.user*
+*.log
+*.err
+*.bak
+*.bat
+*.ps1
