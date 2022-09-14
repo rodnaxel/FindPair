@@ -1,17 +1,17 @@
 # This Python file uses the following encoding: utf-8
 import sys
-
 import logging
 
 from PySide2 import QtCore
-from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog, QAction, QHeaderView, QDialog
+from PySide2.QtWidgets import QApplication, QMainWindow,  QAction, QHeaderView, QDialog
 
-from dialogs import OpenDialog
-from table_model import CustomTableModel
+from models.table_model import CustomTableModel
 
-from ui_mainwindow import Ui_MainWindow
+from ui.dialogs import OpenDialog
+from ui.ui_mainwindow import Ui_MainWindow
 
-from utils import k_pot, get_nearest_value, load_gain_from_excel, table
+from core.utils import k_pot, get_nearest_value, load_gain_from_excel, table
+
 
 logger = logging.getLogger("findpair")
 logger.setLevel(logging.DEBUG)
@@ -74,6 +74,7 @@ class MainWindow(QMainWindow):
         # Create table view
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
+        self.ui.tableView.horizontalHeader().setSectionsMovable(True)
         self.ui.tableView.horizontalHeader().setStretchLastSection(False)
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.tableView.verticalHeader().setDefaultAlignment(QtCore.Qt.AlignVCenter | QtCore.Qt.AlignJustify)

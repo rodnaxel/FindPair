@@ -1,6 +1,7 @@
 
 from PySide2.QtWidgets import QFileDialog, QDialog
-from opendialog import Ui_Dialog
+
+from ui.opendialog import Ui_Dialog
 
 from openpyxl import load_workbook
 
