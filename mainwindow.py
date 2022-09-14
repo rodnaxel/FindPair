@@ -3,14 +3,18 @@ import sys
 import logging
 
 from PySide2 import QtCore
-from PySide2.QtWidgets import QApplication, QMainWindow,  QAction, QHeaderView, QDialog
+from PySide2.QtWidgets import QApplication, QMainWindow,  QAction, QHeaderView, QFileDialog, QDialog, QMessageBox
+from PySide2.QtCharts import QtCharts
 
 from models.table_model import CustomTableModel
 
 from ui.dialogs import OpenDialog
 from ui.ui_mainwindow import Ui_MainWindow
 
-from core.utils import k_pot, get_nearest_value, load_gain_from_excel, table
+from core import findpair
+
+
+__ver__ = '0.9'
 
 
 logger = logging.getLogger("findpair")
@@ -24,54 +28,49 @@ logger.addHandler(fileHandler)
 # logger.addHandler(stream_handler)
 
 
-def find_pair(gain, table, delta):
-    a = [i for i in table if i[2] <= delta]
-    b = [i[1] for i in a]
-    near = get_nearest_value(b, gain)
-    index = b.index(near)
-    res = a[index]
-    return res[0], res[3]
-
-def get_amplifier_pairs(gains, deltas, table):
-    result = []
-    for gain in gains:
-        (k1, k2), (s1,s2) = find_pair(gain, table, deltas)
-        delta = gain - k1 * k2
-        result.append((k1, k2, k1 * k2, gain - k1 * k2, s1, s2))
-    return result
-
-
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
         self.is_load = False
+        self.has_changed = False
+        self.file_settings = None
 
         self.createUI()
 
         # Connect signal/slot
-        self.ui.calculateButton.clicked.connect(self.calculate)
-        self.ui.plotButton.clicked.connect(self.openPlot)
+        self.ui.calculateButton.clicked.connect(self.on_update)
+        self.ui.plotButton.clicked.connect(self.on_open_plot)
         self.ui.exitButton.clicked.connect(self.exit)
+
+        self.ui.deltaSpin.textChanged.connect(self.on_changed_parameters)
+        self.ui.ratioMSpin.textChanged.connect(self.on_changed_parameters)
+        self.ui.pathLine.textChanged.connect(self.on_changed_parameters)
 
     def createUI(self):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle("Find Pair")
+        
+        self.setWindowTitle(f"Find Pair")
 
-        # Create menubar
+        # Menubar
         self.file_menu = self.ui.menubar.addMenu("File")
 
         open_action = QAction("Open...", self)
+        open_action.triggered.connect(self.on_open_file)
         self.file_menu.addAction(open_action)
-        open_action.triggered.connect(self.openAction)
-
+        
         save_as_action = QAction("Save as...", self)
+        save_as_action.triggered.connect(self.on_save_as)
         self.file_menu.addAction(save_as_action)
-        #save_as_action.triggered.connect(self.report)
+        
+        about_action = QAction("About...", self)
+        about_action.triggered.connect(
+            lambda: QMessageBox().about(self, "About FindPairs", f"Version: {__ver__}")
+        )
+        self.file_menu.addAction(about_action)
 
-        # Create table view
+        # Table View
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.ui.tableView.horizontalHeader().setSectionsMovable(True)
@@ -79,53 +78,62 @@ class MainWindow(QMainWindow):
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.tableView.verticalHeader().setDefaultAlignment(QtCore.Qt.AlignVCenter | QtCore.Qt.AlignJustify)
 
-    def calculate(self):
-        delta = self.ui.deltaSpin.value()
-        ratio_m = self.ui.ratioMSpin.value()
-
-        gains = [x / ratio_m for x in self.gains]
-
-        result = get_amplifier_pairs(gains, delta, table)
-
-        self._data = [
-            gains,
-            [x[2] for x in result],
-            [x[0] for x in result],
-            [x[1] for x in result],
-            [x[3] for x in result],
-            [x[4] for x in result],
-            [x[5] for x in result]
-        ]
-        self.model = CustomTableModel(self._data)
-        self.ui.tableView.setModel(self.model)
-
-    def openAction(self):
+    def on_open_file(self):
         open_dialog = OpenDialog()
         open_dialog.open()
 
         if (open_dialog.exec() == QDialog.Accepted):
             stg = open_dialog.settings() 
+            
+            if (stg['filename']):
+                self.is_load = True
+                self.ui.pathLine.setText(stg['filename'])
+                self.file_settings = stg
+                self.ui.statusbar.showMessage("Success load file")
+            else:
+                self.file_settings = None
+                self.is_load = False
 
-            self.gains = load_gain_from_excel(
-                stg['filename'],
-                stg["sheet"],
-                stg["column"] + stg["min_row"],
-                stg["column"] + stg["max_row"]
-            )
-            self.ui.pathLine.setText(stg['filename'])
-            self.ui.statusbar.showMessage("Success load file")
-            self.is_load = True
-            self.enable_widget()
+    def on_save_as(self):
+        filename, _  = QFileDialog.getSaveFileName(
+            self, "Save as", "./data", "Output (*.csv, *.txt)"
+        )
+        if not filename:
+            return
+      
+        self.ui.statusbar.showMessage(f"Save to {filename}")
 
-    def enable_widget(self):
-        self.ui.calculateButton.setEnabled(self.is_load)
-        self.ui.plotButton.setEnabled(self.is_load)
+    def on_update(self):
 
-    def openPlot(self):
-        print("open plot")
+        tolerance = self.ui.deltaSpin.value()
+        ratio_m = self.ui.ratioMSpin.value()
+
+        try:
+            df = findpair.make_it_beatiful(
+                self.file_settings, tolerance=tolerance, m=ratio_m)
+        except Exception as e:
+            logger.exception("Error in function update")
+            df = None
+        finally:
+            self.ui.statusbar.showMessage("Error handle data")
+
+        if not df:
+            return
+
+        self.model = CustomTableModel(df)
+        self.ui.tableView.setModel(self.model)
+
+        self.ui.calculateButton.setEnabled(False)
+
+    def on_open_plot(self):
+        QMessageBox.information(self, "Info", "Недоступно в бесплатной версии")
 
     def exit(self):
         QtCore.QCoreApplication.exit(0)
+
+    def on_changed_parameters(self):
+        self.has_changed = True
+        self.ui.calculateButton.setEnabled(True)
 
 
 

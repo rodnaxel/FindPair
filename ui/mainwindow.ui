@@ -20,17 +20,23 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Source: </string>
+         <string>Filename:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLineEdit" name="pathLine">
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="frame">
+         <bool>true</bool>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
         <property name="placeholderText">
-         <string>Select path to source file</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -170,7 +176,7 @@
       <item>
        <widget class="QPushButton" name="plotButton">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
          <string>Plot...</string>

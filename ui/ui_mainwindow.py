@@ -31,6 +31,8 @@ class Ui_MainWindow(object):
 
         self.pathLine = QLineEdit(self.centralwidget)
         self.pathLine.setObjectName(u"pathLine")
+        self.pathLine.setAutoFillBackground(False)
+        self.pathLine.setFrame(True)
         self.pathLine.setReadOnly(True)
 
         self.selectPathLayout.addWidget(self.pathLine)
@@ -110,7 +112,7 @@ class Ui_MainWindow(object):
 
         self.plotButton = QPushButton(self.centralwidget)
         self.plotButton.setObjectName(u"plotButton")
-        self.plotButton.setEnabled(False)
+        self.plotButton.setEnabled(True)
 
         self.buttonsLayout.addWidget(self.plotButton)
 
@@ -142,8 +144,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Source: ", None))
-        self.pathLine.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Select path to source file", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Filename:", None))
+        self.pathLine.setPlaceholderText("")
         self.parameterBox.setTitle(QCoreApplication.translate("MainWindow", u"Parameters:", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"K1 - K2", None))
         self.deltaSpin.setSuffix("")

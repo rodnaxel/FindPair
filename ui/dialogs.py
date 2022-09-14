@@ -1,5 +1,6 @@
 
 from PySide2.QtWidgets import QFileDialog, QDialog
+from PySide2.QtCharts import QtCharts
 
 from ui.opendialog import Ui_Dialog
 
@@ -41,8 +42,5 @@ class OpenDialog(QDialog):
             "column": self.ui.columnBox.text(),
             "min_row": self.ui.rangeMinBox.text(),
             "max_row": self.ui.rangeMaxBox.text()
-        }
-
-
-        
+        }    
 
