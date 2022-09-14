@@ -44,3 +44,12 @@ class OpenDialog(QDialog):
             "max_row": self.ui.rangeMaxBox.text()
         }    
 
+
+class ChartDialog(QDialog):
+    def __init__(self) -> None:
+        super(ChartDialog, self).__init__()
+
+        self.setWindowTitle("Graph")
+        self.width = 200
+        self.height = 200
+        

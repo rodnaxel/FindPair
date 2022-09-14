@@ -33,15 +33,14 @@ gain_dp = [205, 125, 79, 69, 56, 47, 38, 32, 28, 26,
 
 def generate_rainbow_table(gains):
     """ Get digital potentiometer gains and return generating list in next format:
-    [(gain1, gain2), Total gain, difference between gain1  and gain2], (gain 1 index, gain2 index) """
+    [(gain1, gain2), Total gain, difference between s1  and s2], (gain 1 index, gain2 index) """
     res = []
     for i, m in enumerate(gains):
         for j, n in enumerate(gains[i:]):
-            res.append(((m, n), m * n, abs(m - n), (i + 1, j + i + 1)))   
+            res.append(((m, n), m * n, abs(j), (i + 1, j + i + 1)))   
     return res
 
 rainbow_table = generate_rainbow_table(gain_dp)
-
 
 def get_nearest_value(iterable, value):
     """ Возвращает ближайшее к заданному значение в списке"""

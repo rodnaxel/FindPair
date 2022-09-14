@@ -8,7 +8,7 @@ from PySide2.QtCharts import QtCharts
 
 from models.table_model import CustomTableModel
 
-from ui.dialogs import OpenDialog
+from ui.dialogs import OpenDialog, ChartDialog
 from ui.ui_mainwindow import Ui_MainWindow
 
 from core import findpair
@@ -114,7 +114,6 @@ class MainWindow(QMainWindow):
         except Exception as e:
             logger.exception("Error in function update")
             df = None
-        finally:
             self.ui.statusbar.showMessage("Error handle data")
 
         if not df:
@@ -124,9 +123,14 @@ class MainWindow(QMainWindow):
         self.ui.tableView.setModel(self.model)
 
         self.ui.calculateButton.setEnabled(False)
+        self.ui.statusbar.showMessage("Success handle data")
 
     def on_open_plot(self):
-        QMessageBox.information(self, "Info", "Недоступно в бесплатной версии")
+        #QMessageBox.information(self, "Info", "Недоступно в бесплатной версии")
+        chart_dialog = ChartDialog()
+        chart_dialog.setModal(True)
+        chart_dialog.open()
+        chart_dialog.exec()
 
     def exit(self):
         QtCore.QCoreApplication.exit(0)
