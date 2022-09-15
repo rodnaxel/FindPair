@@ -42,6 +42,8 @@ class MainWindow(QMainWindow):
         self.createUI()
 
         # Connect signal/slot
+        self.ui.selectButton.clicked.connect(self.on_open_file)
+
         self.ui.calculateButton.clicked.connect(self.on_update)
         self.ui.plotButton.clicked.connect(self.on_open_plot)
         self.ui.exitButton.clicked.connect(self.exit)
@@ -84,15 +86,14 @@ class MainWindow(QMainWindow):
     def on_open_file(self):
         open_dialog = OpenDialog()
         open_dialog.open()
-
         if open_dialog.exec() == QDialog.Accepted:
             stg = open_dialog.settings()
 
-            if stg['filename']:
+            if stg['filename'] and not self.is_load:
                 self.is_load = True
                 self.ui.pathLine.setText(stg['filename'])
                 self.file_settings = stg
-                self.ui.statusbar.showMessage("Success load file")
+                self.ui.statusbar.showMessage(f"Success load file {stg['filename']}")
             else:
                 self.file_settings = None
                 self.is_load = False
@@ -120,7 +121,7 @@ class MainWindow(QMainWindow):
         ratio_m = self.ui.ratioMSpin.value()
 
         try:
-            df, sigma = findpair.make_it_beatiful(
+            df, _ = findpair.make_it_beatiful(
                 self.file_settings, tolerance=tolerance, m=ratio_m)
         except Exception as e:
             logger.exception("Error in function update")
@@ -133,11 +134,10 @@ class MainWindow(QMainWindow):
         self.model = CustomTableModel(df)
         self.ui.tableView.setModel(self.model)
 
-        self.ui.msdLabel.setText(f"{sigma:.2F}")
-
         self.ui.calculateButton.setEnabled(False)
-        self.has_changed = False
         self.ui.statusbar.showMessage("Success handle data")
+
+        self.has_changed = False
 
     def on_open_plot(self):
         chart_dialog = ChartDialog(model=self.model)

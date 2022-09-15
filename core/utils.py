@@ -13,16 +13,21 @@ def load_gain_from_excel(path, sheetname, lo, hi):
     return result
 
 
-def save_as(path, what, fmt=None):
-    for i, item in enumerate(what):
-        with open(path + f'/k{i}.txt', "w") as f:
-            for row in item:
-                if fmt == 'hex':
-                    row = hex(row)
-                f.write(row)
+def load_potentiometer_gain(path):
+    res = []
+    with open(path, 'r') as f:
+        for line in f:
+            line = line.strip('\n ,')
+            res.extend([float(x) for x in line.split(',')])
+    return res
 
 
 def to_csv(filename, data, mode='w'):
     with open(filename, mode) as f:
         writer = csv.writer(f, delimiter=',')
         writer.writerows(data)
+
+
+if __name__ == "__main__":
+    path = "../data/dp_gains.txt"
+    print(load_potentiometer_gain(path))

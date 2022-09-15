@@ -22,14 +22,19 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.sourceGroup = QGroupBox(self.centralwidget)
+        self.sourceGroup.setObjectName(u"sourceGroup")
+        self.verticalLayout_4 = QVBoxLayout(self.sourceGroup)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.selectPathLayout = QHBoxLayout()
         self.selectPathLayout.setObjectName(u"selectPathLayout")
-        self.label = QLabel(self.centralwidget)
+        self.label = QLabel(self.sourceGroup)
         self.label.setObjectName(u"label")
+        self.label.setMinimumSize(QSize(80, 0))
 
         self.selectPathLayout.addWidget(self.label)
 
-        self.pathLine = QLineEdit(self.centralwidget)
+        self.pathLine = QLineEdit(self.sourceGroup)
         self.pathLine.setObjectName(u"pathLine")
         self.pathLine.setAutoFillBackground(False)
         self.pathLine.setFrame(True)
@@ -38,35 +43,48 @@ class Ui_MainWindow(object):
         self.selectPathLayout.addWidget(self.pathLine)
 
 
-        self.verticalLayout_2.addLayout(self.selectPathLayout)
+        self.verticalLayout_4.addLayout(self.selectPathLayout)
+
+        self.selectPathLayout_3 = QHBoxLayout()
+        self.selectPathLayout_3.setObjectName(u"selectPathLayout_3")
+        self.label_6 = QLabel(self.sourceGroup)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setMinimumSize(QSize(80, 0))
+
+        self.selectPathLayout_3.addWidget(self.label_6)
+
+        self.pathLine_3 = QLineEdit(self.sourceGroup)
+        self.pathLine_3.setObjectName(u"pathLine_3")
+        self.pathLine_3.setAutoFillBackground(False)
+        self.pathLine_3.setFrame(True)
+        self.pathLine_3.setReadOnly(True)
+
+        self.selectPathLayout_3.addWidget(self.pathLine_3)
+
+
+        self.verticalLayout_4.addLayout(self.selectPathLayout_3)
+
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout.addItem(self.horizontalSpacer_5)
+
+        self.selectButton = QPushButton(self.sourceGroup)
+        self.selectButton.setObjectName(u"selectButton")
+
+        self.horizontalLayout.addWidget(self.selectButton)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout)
+
+
+        self.verticalLayout_2.addWidget(self.sourceGroup)
 
         self.parameterBox = QGroupBox(self.centralwidget)
         self.parameterBox.setObjectName(u"parameterBox")
-        self.verticalLayout = QVBoxLayout(self.parameterBox)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.deltaLayout = QHBoxLayout()
-        self.deltaLayout.setObjectName(u"deltaLayout")
-        self.label_2 = QLabel(self.parameterBox)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setMinimumSize(QSize(50, 0))
-
-        self.deltaLayout.addWidget(self.label_2)
-
-        self.deltaSpin = QSpinBox(self.parameterBox)
-        self.deltaSpin.setObjectName(u"deltaSpin")
-        self.deltaSpin.setMinimumSize(QSize(60, 0))
-        self.deltaSpin.setMaximum(255)
-        self.deltaSpin.setValue(1)
-
-        self.deltaLayout.addWidget(self.deltaSpin)
-
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.deltaLayout.addItem(self.horizontalSpacer_2)
-
-
-        self.verticalLayout.addLayout(self.deltaLayout)
-
+        self.horizontalLayout_2 = QHBoxLayout(self.parameterBox)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.ratioMLayout = QHBoxLayout()
         self.ratioMLayout.setObjectName(u"ratioMLayout")
         self.label_3 = QLabel(self.parameterBox)
@@ -86,48 +104,38 @@ class Ui_MainWindow(object):
 
         self.ratioMLayout.addWidget(self.ratioMSpin)
 
+
+        self.horizontalLayout_2.addLayout(self.ratioMLayout)
+
+        self.deltaLayout = QHBoxLayout()
+        self.deltaLayout.setObjectName(u"deltaLayout")
+        self.label_2 = QLabel(self.parameterBox)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setMinimumSize(QSize(50, 0))
+
+        self.deltaLayout.addWidget(self.label_2)
+
+        self.deltaSpin = QSpinBox(self.parameterBox)
+        self.deltaSpin.setObjectName(u"deltaSpin")
+        self.deltaSpin.setMinimumSize(QSize(60, 0))
+        self.deltaSpin.setMaximum(255)
+        self.deltaSpin.setValue(10)
+
+        self.deltaLayout.addWidget(self.deltaSpin)
+
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.ratioMLayout.addItem(self.horizontalSpacer)
+        self.deltaLayout.addItem(self.horizontalSpacer)
 
 
-        self.verticalLayout.addLayout(self.ratioMLayout)
+        self.horizontalLayout_2.addLayout(self.deltaLayout)
 
 
         self.verticalLayout_2.addWidget(self.parameterBox)
 
-        self.groupBox = QGroupBox(self.centralwidget)
-        self.groupBox.setObjectName(u"groupBox")
-        self.verticalLayout_3 = QVBoxLayout(self.groupBox)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.layout = QHBoxLayout()
-        self.layout.setObjectName(u"layout")
-        self.label_4 = QLabel(self.groupBox)
-        self.label_4.setObjectName(u"label_4")
-        self.label_4.setMinimumSize(QSize(50, 0))
-
-        self.layout.addWidget(self.label_4)
-
-        self.msdLabel = QLabel(self.groupBox)
-        self.msdLabel.setObjectName(u"msdLabel")
-        self.msdLabel.setMinimumSize(QSize(50, 0))
-        self.msdLabel.setFrameShape(QFrame.Box)
-        self.msdLabel.setFrameShadow(QFrame.Raised)
-
-        self.layout.addWidget(self.msdLabel)
-
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.layout.addItem(self.horizontalSpacer_4)
-
-
-        self.verticalLayout_3.addLayout(self.layout)
-
-
-        self.verticalLayout_2.addWidget(self.groupBox)
-
         self.tableView = QTableView(self.centralwidget)
         self.tableView.setObjectName(u"tableView")
+        self.tableView.setFrameShadow(QFrame.Plain)
 
         self.verticalLayout_2.addWidget(self.tableView)
 
@@ -173,16 +181,17 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Source:", None))
+        self.sourceGroup.setTitle(QCoreApplication.translate("MainWindow", u"GroupBox", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Gain File:", None))
         self.pathLine.setPlaceholderText("")
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Gain DP File:", None))
+        self.pathLine_3.setPlaceholderText("")
+        self.selectButton.setText(QCoreApplication.translate("MainWindow", u"Select...", None))
         self.parameterBox.setTitle(QCoreApplication.translate("MainWindow", u"Parameters:", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"|S1 - S2|:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"M:", None))
         self.ratioMSpin.setSpecialValueText("")
         self.ratioMSpin.setPrefix("")
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Result:", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Sigma:", None))
-        self.msdLabel.setText("")
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"|S1 - S2|:", None))
         self.calculateButton.setText(QCoreApplication.translate("MainWindow", u"Update", None))
         self.plotButton.setText(QCoreApplication.translate("MainWindow", u"Chart", None))
         self.exitButton.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
