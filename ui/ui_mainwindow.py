@@ -57,8 +57,8 @@ class Ui_MainWindow(object):
         self.deltaSpin.setButtonSymbols(QAbstractSpinBox.PlusMinus)
         self.deltaSpin.setDecimals(1)
         self.deltaSpin.setMaximum(204.000000000000000)
-        self.deltaSpin.setSingleStep(0.500000000000000)
-        self.deltaSpin.setValue(5.000000000000000)
+        self.deltaSpin.setSingleStep(1.000000000000000)
+        self.deltaSpin.setValue(1.000000000000000)
 
         self.deltaLayout.addWidget(self.deltaSpin)
 
@@ -96,6 +96,36 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_2.addWidget(self.parameterBox)
+
+        self.groupBox = QGroupBox(self.centralwidget)
+        self.groupBox.setObjectName(u"groupBox")
+        self.verticalLayout_3 = QVBoxLayout(self.groupBox)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.layout = QHBoxLayout()
+        self.layout.setObjectName(u"layout")
+        self.label_4 = QLabel(self.groupBox)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setMinimumSize(QSize(50, 0))
+
+        self.layout.addWidget(self.label_4)
+
+        self.msdLabel = QLabel(self.groupBox)
+        self.msdLabel.setObjectName(u"msdLabel")
+        self.msdLabel.setMinimumSize(QSize(50, 0))
+        self.msdLabel.setFrameShape(QFrame.Box)
+        self.msdLabel.setFrameShadow(QFrame.Raised)
+
+        self.layout.addWidget(self.msdLabel)
+
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.layout.addItem(self.horizontalSpacer_4)
+
+
+        self.verticalLayout_3.addLayout(self.layout)
+
+
+        self.verticalLayout_2.addWidget(self.groupBox)
 
         self.tableView = QTableView(self.centralwidget)
         self.tableView.setObjectName(u"tableView")
@@ -147,11 +177,14 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"Filename:", None))
         self.pathLine.setPlaceholderText("")
         self.parameterBox.setTitle(QCoreApplication.translate("MainWindow", u"Parameters:", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"K1 - K2", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"|S1 - S2|:", None))
         self.deltaSpin.setSuffix("")
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"M", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"M:", None))
         self.ratioMSpin.setSpecialValueText("")
         self.ratioMSpin.setPrefix("")
+        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Result:", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"MSD:", None))
+        self.msdLabel.setText("")
         self.calculateButton.setText(QCoreApplication.translate("MainWindow", u"Update", None))
         self.plotButton.setText(QCoreApplication.translate("MainWindow", u"Plot...", None))
         self.exitButton.setText(QCoreApplication.translate("MainWindow", u"Exit", None))

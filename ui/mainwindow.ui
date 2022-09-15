@@ -59,7 +59,7 @@
             </size>
            </property>
            <property name="text">
-            <string>K1 - K2</string>
+            <string>|S1 - S2|:</string>
            </property>
           </widget>
          </item>
@@ -78,10 +78,10 @@
             <double>204.000000000000000</double>
            </property>
            <property name="singleStep">
-            <double>0.500000000000000</double>
+            <double>1.000000000000000</double>
            </property>
            <property name="value">
-            <double>5.000000000000000</double>
+            <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -111,7 +111,7 @@
             </size>
            </property>
            <property name="text">
-            <string>M</string>
+            <string>M:</string>
            </property>
           </widget>
          </item>
@@ -142,6 +142,64 @@
          </item>
          <item>
           <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Result:</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="layout">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>MSD:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="msdLabel">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>

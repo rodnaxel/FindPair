@@ -1,9 +1,10 @@
 # This Python file uses the following encoding: utf-8
+from fileinput import filename
 import sys
 import logging
 
 from PySide2 import QtCore
-from PySide2.QtWidgets import QApplication, QMainWindow,  QAction, QHeaderView, QFileDialog, QDialog, QMessageBox
+from PySide2.QtWidgets import QApplication, QMainWindow, QAction, QHeaderView, QFileDialog, QDialog, QMessageBox
 from PySide2.QtCharts import QtCharts
 
 from models.table_model import CustomTableModel
@@ -13,9 +14,7 @@ from ui.ui_mainwindow import Ui_MainWindow
 
 from core import findpair
 
-
 __ver__ = '0.9'
-
 
 logger = logging.getLogger("findpair")
 logger.setLevel(logging.DEBUG)
@@ -23,8 +22,9 @@ fileHandler = logging.FileHandler('errors.log')
 fileHandler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
 logger.addHandler(fileHandler)
 
-#stream_handler = logging.StreamHandler(stream=sys.stdout)
-#stream_handler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
+
+# stream_handler = logging.StreamHandler(stream=sys.stdout)
+# stream_handler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
 # logger.addHandler(stream_handler)
 
 
@@ -35,6 +35,8 @@ class MainWindow(QMainWindow):
         self.is_load = False
         self.has_changed = False
         self.file_settings = None
+
+        self.model = None
 
         self.createUI()
 
@@ -50,7 +52,7 @@ class MainWindow(QMainWindow):
     def createUI(self):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        
+
         self.setWindowTitle(f"Find Pair")
 
         # Menubar
@@ -59,11 +61,11 @@ class MainWindow(QMainWindow):
         open_action = QAction("Open...", self)
         open_action.triggered.connect(self.on_open_file)
         self.file_menu.addAction(open_action)
-        
+
         save_as_action = QAction("Save as...", self)
         save_as_action.triggered.connect(self.on_save_as)
         self.file_menu.addAction(save_as_action)
-        
+
         about_action = QAction("About...", self)
         about_action.triggered.connect(
             lambda: QMessageBox().about(self, "About FindPairs", f"Version: {__ver__}")
@@ -83,8 +85,8 @@ class MainWindow(QMainWindow):
         open_dialog.open()
 
         if (open_dialog.exec() == QDialog.Accepted):
-            stg = open_dialog.settings() 
-            
+            stg = open_dialog.settings()
+
             if (stg['filename']):
                 self.is_load = True
                 self.ui.pathLine.setText(stg['filename'])
@@ -95,21 +97,20 @@ class MainWindow(QMainWindow):
                 self.is_load = False
 
     def on_save_as(self):
-        filename, _  = QFileDialog.getSaveFileName(
-            self, "Save as", "./data", "Output (*.csv, *.txt)"
+        path = QFileDialog.getExistingDirectory(
+            self, "Open directory", "./data", QFileDialog.ShowDirsOnly
         )
-        if not filename:
+        if not path:
             return
-      
-        self.ui.statusbar.showMessage(f"Save to {filename}")
+
+        self.ui.statusbar.showMessage(f"Save to {path}")
 
     def on_update(self):
-
         tolerance = self.ui.deltaSpin.value()
         ratio_m = self.ui.ratioMSpin.value()
 
         try:
-            df = findpair.make_it_beatiful(
+            df, sigma = findpair.make_it_beatiful(
                 self.file_settings, tolerance=tolerance, m=ratio_m)
         except Exception as e:
             logger.exception("Error in function update")
@@ -121,14 +122,22 @@ class MainWindow(QMainWindow):
 
         self.model = CustomTableModel(df)
         self.ui.tableView.setModel(self.model)
+        self.ui.msdLabel.setText(f"{sigma:.2F}")
+
+        try:
+            self.chart_dialog.reject()
+            self.chart_dialog = chart_dialog = ChartDialog(model=self.model)
+            chart_dialog.setModal(True)
+            chart_dialog.open()
+            chart_dialog.exec()
+        except AttributeError:
+            pass
 
         self.ui.calculateButton.setEnabled(False)
         self.ui.statusbar.showMessage("Success handle data")
 
     def on_open_plot(self):
-        #QMessageBox.information(self, "Info", "Недоступно в бесплатной версии")
-        chart_dialog = ChartDialog()
-        chart_dialog.setModal(True)
+        self.chart_dialog = chart_dialog = ChartDialog(model=self.model)
         chart_dialog.open()
         chart_dialog.exec()
 
@@ -138,7 +147,6 @@ class MainWindow(QMainWindow):
     def on_changed_parameters(self):
         self.has_changed = True
         self.ui.calculateButton.setEnabled(True)
-
 
 
 if __name__ == "__main__":
