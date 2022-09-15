@@ -1,3 +1,4 @@
+import csv
 from openpyxl import load_workbook
 
 
@@ -19,3 +20,9 @@ def save_as(path, what, fmt=None):
                 if fmt == 'hex':
                     row = hex(row)
                 f.write(row)
+
+
+def to_csv(filename, data, mode='w'):
+    with open(filename, mode) as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerows(data)

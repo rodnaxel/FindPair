@@ -104,12 +104,14 @@ class MainWindow(QMainWindow):
         if not path:
             return
 
-        k1 = []
-        k2 = []
-        for x in range(self.model.rowCount()):
-            k1.append(self.model.index(x, 5).data())
-            k2.append(self.model.index(x, 6).data())
-        utils.save_as(path, (k1, k2), fmt='hex')
+        # Prepare data for saving
+        datatable = []
+        for r in range(self.model.rowCount()):
+            row = []
+            for c in range(self.model.columnCount()):
+                row.append(self.model.index(r, c).data())
+            datatable.append(row)
+        utils.to_csv(path + "/output.csv", datatable)
 
         self.ui.statusbar.showMessage(f"Save to {path}")
 
