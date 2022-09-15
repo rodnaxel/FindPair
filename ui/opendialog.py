@@ -135,6 +135,11 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addLayout(self.h_layout_4)
 
+        self.loadAndUpdateCheck = QCheckBox(Dialog)
+        self.loadAndUpdateCheck.setObjectName(u"loadAndUpdateCheck")
+
+        self.verticalLayout.addWidget(self.loadAndUpdateCheck)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
@@ -157,12 +162,13 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Open file", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"Filename:", None))
-        self.filenameBox.setPlaceholderText(QCoreApplication.translate("Dialog", u"Select path to source file", None))
+        self.filenameBox.setPlaceholderText(QCoreApplication.translate("Dialog", u"Select source data file", None))
         self.browseButton.setText(QCoreApplication.translate("Dialog", u"Browse...", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"Sheet:", None))
         self.sheetBox.setPlaceholderText(QCoreApplication.translate("Dialog", u"Select sheet", None))
         self.label_3.setText(QCoreApplication.translate("Dialog", u"Column:", None))
         self.label_4.setText(QCoreApplication.translate("Dialog", u"Range:", None))
         self.label_5.setText(QCoreApplication.translate("Dialog", u":", None))
+        self.loadAndUpdateCheck.setText(QCoreApplication.translate("Dialog", u"Load and update", None))
     # retranslateUi
 

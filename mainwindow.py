@@ -109,8 +109,7 @@ class MainWindow(QMainWindow):
         for x in range(self.model.rowCount()):
             k1.append(self.model.index(x, 5).data())
             k2.append(self.model.index(x, 6).data())
-
-        utils.save_as(path, (k1,k2), fmt='hex')
+        utils.save_as(path, (k1, k2), fmt='hex')
 
         self.ui.statusbar.showMessage(f"Save to {path}")
 
@@ -131,9 +130,11 @@ class MainWindow(QMainWindow):
 
         self.model = CustomTableModel(df)
         self.ui.tableView.setModel(self.model)
+
         self.ui.msdLabel.setText(f"{sigma:.2F}")
 
         self.ui.calculateButton.setEnabled(False)
+        self.has_changed = False
         self.ui.statusbar.showMessage("Success handle data")
 
     def on_open_plot(self):
@@ -141,12 +142,14 @@ class MainWindow(QMainWindow):
         chart_dialog.open()
         chart_dialog.exec()
 
+    @staticmethod
     def exit(self):
         QtCore.QCoreApplication.exit(0)
 
     def on_changed_parameters(self):
         self.has_changed = True
-        self.ui.calculateButton.setEnabled(True)
+        if self.is_load:
+            self.ui.calculateButton.setEnabled(True)
 
 
 if __name__ == "__main__":

@@ -173,7 +173,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Filename:", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Source:", None))
         self.pathLine.setPlaceholderText("")
         self.parameterBox.setTitle(QCoreApplication.translate("MainWindow", u"Parameters:", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"|S1 - S2|:", None))
@@ -181,10 +181,10 @@ class Ui_MainWindow(object):
         self.ratioMSpin.setSpecialValueText("")
         self.ratioMSpin.setPrefix("")
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Result:", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"MSD:", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Sigma:", None))
         self.msdLabel.setText("")
         self.calculateButton.setText(QCoreApplication.translate("MainWindow", u"Update", None))
-        self.plotButton.setText(QCoreApplication.translate("MainWindow", u"Plot...", None))
+        self.plotButton.setText(QCoreApplication.translate("MainWindow", u"Chart", None))
         self.exitButton.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
     # retranslateUi
 

@@ -20,7 +20,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Filename:</string>
+         <string>Source:</string>
         </property>
        </widget>
       </item>
@@ -175,7 +175,7 @@
             </size>
            </property>
            <property name="text">
-            <string>MSD:</string>
+            <string>Sigma:</string>
            </property>
           </widget>
          </item>
@@ -237,7 +237,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Plot...</string>
+         <string>Chart</string>
         </property>
        </widget>
       </item>
