@@ -13,6 +13,7 @@ from ui.dialogs import OpenDialog, ChartDialog
 from ui.ui_mainwindow import Ui_MainWindow
 
 from core import findpair
+from core import utils
 
 __ver__ = '0.9'
 
@@ -84,10 +85,10 @@ class MainWindow(QMainWindow):
         open_dialog = OpenDialog()
         open_dialog.open()
 
-        if (open_dialog.exec() == QDialog.Accepted):
+        if open_dialog.exec() == QDialog.Accepted:
             stg = open_dialog.settings()
 
-            if (stg['filename']):
+            if stg['filename']:
                 self.is_load = True
                 self.ui.pathLine.setText(stg['filename'])
                 self.file_settings = stg
@@ -102,6 +103,14 @@ class MainWindow(QMainWindow):
         )
         if not path:
             return
+
+        k1 = []
+        k2 = []
+        for x in range(self.model.rowCount()):
+            k1.append(self.model.index(x, 5).data())
+            k2.append(self.model.index(x, 6).data())
+
+        utils.save_as(path, (k1,k2), fmt='hex')
 
         self.ui.statusbar.showMessage(f"Save to {path}")
 
@@ -124,20 +133,11 @@ class MainWindow(QMainWindow):
         self.ui.tableView.setModel(self.model)
         self.ui.msdLabel.setText(f"{sigma:.2F}")
 
-        try:
-            self.chart_dialog.reject()
-            self.chart_dialog = chart_dialog = ChartDialog(model=self.model)
-            chart_dialog.setModal(True)
-            chart_dialog.open()
-            chart_dialog.exec()
-        except AttributeError:
-            pass
-
         self.ui.calculateButton.setEnabled(False)
         self.ui.statusbar.showMessage("Success handle data")
 
     def on_open_plot(self):
-        self.chart_dialog = chart_dialog = ChartDialog(model=self.model)
+        chart_dialog = ChartDialog(model=self.model)
         chart_dialog.open()
         chart_dialog.exec()
 

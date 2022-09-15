@@ -64,24 +64,18 @@
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="deltaSpin">
-           <property name="buttonSymbols">
-            <enum>QAbstractSpinBox::PlusMinus</enum>
-           </property>
-           <property name="suffix">
-            <string/>
-           </property>
-           <property name="decimals">
-            <number>1</number>
+          <widget class="QSpinBox" name="deltaSpin">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
            </property>
            <property name="maximum">
-            <double>204.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>1.000000000000000</double>
+            <number>255</number>
            </property>
            <property name="value">
-            <double>1.000000000000000</double>
+            <number>1</number>
            </property>
           </widget>
          </item>
@@ -117,6 +111,12 @@
          </item>
          <item>
           <widget class="QDoubleSpinBox" name="ratioMSpin">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="buttonSymbols">
             <enum>QAbstractSpinBox::PlusMinus</enum>
            </property>

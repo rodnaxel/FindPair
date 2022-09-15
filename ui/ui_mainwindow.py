@@ -52,13 +52,11 @@ class Ui_MainWindow(object):
 
         self.deltaLayout.addWidget(self.label_2)
 
-        self.deltaSpin = QDoubleSpinBox(self.parameterBox)
+        self.deltaSpin = QSpinBox(self.parameterBox)
         self.deltaSpin.setObjectName(u"deltaSpin")
-        self.deltaSpin.setButtonSymbols(QAbstractSpinBox.PlusMinus)
-        self.deltaSpin.setDecimals(1)
-        self.deltaSpin.setMaximum(204.000000000000000)
-        self.deltaSpin.setSingleStep(1.000000000000000)
-        self.deltaSpin.setValue(1.000000000000000)
+        self.deltaSpin.setMinimumSize(QSize(60, 0))
+        self.deltaSpin.setMaximum(255)
+        self.deltaSpin.setValue(1)
 
         self.deltaLayout.addWidget(self.deltaSpin)
 
@@ -79,6 +77,7 @@ class Ui_MainWindow(object):
 
         self.ratioMSpin = QDoubleSpinBox(self.parameterBox)
         self.ratioMSpin.setObjectName(u"ratioMSpin")
+        self.ratioMSpin.setMinimumSize(QSize(60, 0))
         self.ratioMSpin.setButtonSymbols(QAbstractSpinBox.PlusMinus)
         self.ratioMSpin.setMinimum(0.100000000000000)
         self.ratioMSpin.setMaximum(10.000000000000000)
@@ -178,7 +177,6 @@ class Ui_MainWindow(object):
         self.pathLine.setPlaceholderText("")
         self.parameterBox.setTitle(QCoreApplication.translate("MainWindow", u"Parameters:", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"|S1 - S2|:", None))
-        self.deltaSpin.setSuffix("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"M:", None))
         self.ratioMSpin.setSpecialValueText("")
         self.ratioMSpin.setPrefix("")
