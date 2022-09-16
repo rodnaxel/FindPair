@@ -21,9 +21,8 @@ def load_potentiometer_gain(path):
             res.extend([float(x) for x in line.split(',')])
     return res
 
-
-def to_csv(filename, data, mode='w'):
-    with open(filename, mode) as f:
+def to_csv(filename, data, mode='w', newline=''):
+    with open(filename, mode, newline=newline) as f:
         writer = csv.writer(f, delimiter=',')
         writer.writerows(data)
 
