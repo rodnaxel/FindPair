@@ -15,7 +15,7 @@ from ui.ui_mainwindow import Ui_MainWindow
 from core import findpair
 from core import utils
 
-__ver__ = '0.9'
+__ver__ = '0.92'
 
 logger = logging.getLogger("findpair")
 logger.setLevel(logging.DEBUG)
@@ -35,11 +35,12 @@ class MainWindow(QMainWindow):
 
         self.is_load = False
         self.has_changed = False
-        self.file_settings = None
+
+        self.settings = {}
 
         self.model = None
 
-        self.createUI()
+        self.createUi()
 
         # Connect signal/slot
         self.ui.selectButton.clicked.connect(self.on_open_file)
@@ -48,17 +49,17 @@ class MainWindow(QMainWindow):
         self.ui.plotButton.clicked.connect(self.on_open_plot)
         self.ui.exitButton.clicked.connect(self.exit)
 
-        self.ui.deltaSpin.textChanged.connect(self.on_changed_parameters)
-        self.ui.ratioMSpin.textChanged.connect(self.on_changed_parameters)
-        self.ui.pathLine.textChanged.connect(self.on_changed_parameters)
+        self.ui.deltaSpin.textChanged.connect(self.parameter_changed)
+        self.ui.ratioMSpin.textChanged.connect(self.parameter_changed)
+        self.ui.sourceGainLine.textChanged.connect(self.parameter_changed)
 
-    def createUI(self):
+    def createUi(self):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.createMenuBar()
+        self.createTableView()
 
-        self.setWindowTitle(f"Find Pair")
-
-        # Menubar
+    def createMenuBar(self):
         self.file_menu = self.ui.menubar.addMenu("File")
 
         open_action = QAction("Open...", self)
@@ -75,7 +76,7 @@ class MainWindow(QMainWindow):
         )
         self.file_menu.addAction(about_action)
 
-        # Table View
+    def createTableView(self):
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.ui.tableView.horizontalHeader().setSectionsMovable(True)
@@ -85,18 +86,18 @@ class MainWindow(QMainWindow):
 
     def on_open_file(self):
         open_dialog = OpenDialog()
-        open_dialog.open()
+
         if open_dialog.exec() == QDialog.Accepted:
             stg = open_dialog.settings()
 
             if stg['filename'] and not self.is_load:
                 self.is_load = True
-                self.ui.pathLine.setText(stg['filename'])
-                self.file_settings = stg
-                self.ui.statusbar.showMessage(f"Success load file {stg['filename']}")
-            else:
-                self.file_settings = None
-                self.is_load = False
+                self.settings.update(stg)
+
+                self.ui.sourceGainLine.setText(self.settings['filename'])
+                self.ui.statusbar.showMessage(
+                    f"Success load file {self.settings['filename']}"
+                )
 
     def on_save_as(self):
         path = QFileDialog.getExistingDirectory(
@@ -114,7 +115,9 @@ class MainWindow(QMainWindow):
             datatable.append(row)
         utils.to_csv(path + "/output.csv", datatable)
 
+        print(self.chart_dialog)
         self.ui.statusbar.showMessage(f"Save to {path}")
+
 
     def on_update(self):
         tolerance = self.ui.deltaSpin.value()
@@ -122,7 +125,7 @@ class MainWindow(QMainWindow):
 
         try:
             df, _ = findpair.make_it_beatiful(
-                self.file_settings, tolerance=tolerance, m=ratio_m)
+                self.settings, tolerance=tolerance, m=ratio_m)
         except Exception as e:
             logger.exception("Error in function update")
             df = None
@@ -140,15 +143,14 @@ class MainWindow(QMainWindow):
         self.has_changed = False
 
     def on_open_plot(self):
-        chart_dialog = ChartDialog(model=self.model)
-        chart_dialog.open()
-        chart_dialog.exec()
+        self.chart_dialog = ChartDialog(model=self.model)
+        self.chart_dialog.exec()
 
     @staticmethod
     def exit(self):
         QtCore.QCoreApplication.exit(0)
 
-    def on_changed_parameters(self):
+    def parameter_changed(self):
         self.has_changed = True
         if self.is_load:
             self.ui.calculateButton.setEnabled(True)

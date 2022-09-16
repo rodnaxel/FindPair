@@ -34,13 +34,18 @@ class Ui_MainWindow(object):
 
         self.selectPathLayout.addWidget(self.label)
 
-        self.pathLine = QLineEdit(self.sourceGroup)
-        self.pathLine.setObjectName(u"pathLine")
-        self.pathLine.setAutoFillBackground(False)
-        self.pathLine.setFrame(True)
-        self.pathLine.setReadOnly(True)
+        self.sourceGainLine = QLineEdit(self.sourceGroup)
+        self.sourceGainLine.setObjectName(u"sourceGainLine")
+        self.sourceGainLine.setAutoFillBackground(False)
+        self.sourceGainLine.setFrame(True)
+        self.sourceGainLine.setReadOnly(True)
 
-        self.selectPathLayout.addWidget(self.pathLine)
+        self.selectPathLayout.addWidget(self.sourceGainLine)
+
+        self.selectButton = QPushButton(self.sourceGroup)
+        self.selectButton.setObjectName(u"selectButton")
+
+        self.selectPathLayout.addWidget(self.selectButton)
 
 
         self.verticalLayout_4.addLayout(self.selectPathLayout)
@@ -53,28 +58,24 @@ class Ui_MainWindow(object):
 
         self.selectPathLayout_3.addWidget(self.label_6)
 
-        self.pathLine_3 = QLineEdit(self.sourceGroup)
-        self.pathLine_3.setObjectName(u"pathLine_3")
-        self.pathLine_3.setAutoFillBackground(False)
-        self.pathLine_3.setFrame(True)
-        self.pathLine_3.setReadOnly(True)
+        self.sourceDpLine = QLineEdit(self.sourceGroup)
+        self.sourceDpLine.setObjectName(u"sourceDpLine")
+        self.sourceDpLine.setAutoFillBackground(False)
+        self.sourceDpLine.setFrame(True)
+        self.sourceDpLine.setReadOnly(True)
 
-        self.selectPathLayout_3.addWidget(self.pathLine_3)
+        self.selectPathLayout_3.addWidget(self.sourceDpLine)
+
+        self.selectDpButton = QPushButton(self.sourceGroup)
+        self.selectDpButton.setObjectName(u"selectDpButton")
+
+        self.selectPathLayout_3.addWidget(self.selectDpButton)
 
 
         self.verticalLayout_4.addLayout(self.selectPathLayout_3)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout.addItem(self.horizontalSpacer_5)
-
-        self.selectButton = QPushButton(self.sourceGroup)
-        self.selectButton.setObjectName(u"selectButton")
-
-        self.horizontalLayout.addWidget(self.selectButton)
-
 
         self.verticalLayout_4.addLayout(self.horizontalLayout)
 
@@ -180,13 +181,14 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.sourceGroup.setTitle(QCoreApplication.translate("MainWindow", u"GroupBox", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Find Pair", None))
+        self.sourceGroup.setTitle(QCoreApplication.translate("MainWindow", u"Data:", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Gain File:", None))
-        self.pathLine.setPlaceholderText("")
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Gain DP File:", None))
-        self.pathLine_3.setPlaceholderText("")
+        self.sourceGainLine.setPlaceholderText("")
         self.selectButton.setText(QCoreApplication.translate("MainWindow", u"Select...", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Gain DP File:", None))
+        self.sourceDpLine.setPlaceholderText("")
+        self.selectDpButton.setText(QCoreApplication.translate("MainWindow", u"Select...", None))
         self.parameterBox.setTitle(QCoreApplication.translate("MainWindow", u"Parameters:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"M:", None))
         self.ratioMSpin.setSpecialValueText("")
