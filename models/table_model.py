@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from PySide2.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PySide2.QtGui import QColor
 

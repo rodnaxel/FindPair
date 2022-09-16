@@ -1,5 +1,5 @@
-# This Python file uses the following encoding: utf-8
-from fileinput import filename
+# -*- coding: utf-8 -*-
+
 import sys
 import logging
 

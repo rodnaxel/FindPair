@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from math import sqrt, pow
 from core.utils import load_gain_from_excel
 
@@ -66,10 +68,10 @@ def get_amplifier_pairs(gains, deltas, table):
 
 
 def sigma(values):
-    N = len(values)
+    n = len(values)
     average = sum(values)
     d = [pow((x - average), 2) for x in values]
-    return sqrt(sum(d) / N - 1)
+    return sqrt(sum(d) / n - 1)
 
 
 def make_it_beatiful(src, **param):
