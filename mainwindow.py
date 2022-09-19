@@ -44,6 +44,7 @@ class MainWindow(QMainWindow):
 
         # Connect signal/slot
         self.ui.selectButton.clicked.connect(self.on_open_file)
+        self.ui.selectDpButton.clicked.connect(self.on_select_ratio_file)
 
         self.ui.calculateButton.clicked.connect(self.on_update)
         self.ui.plotButton.clicked.connect(self.on_open_plot)
@@ -98,6 +99,18 @@ class MainWindow(QMainWindow):
                 self.ui.statusbar.showMessage(
                     f"Success load file {self.settings['filename']}"
                 )
+
+    def on_select_ratio_file(self):
+        filename, _ = QFileDialog().getOpenFileName(
+            dir="./data/"
+        )
+
+        if not filename:
+            return
+
+        self.points = utils.load_potentiometer_gain(filename)
+        self.ui.sourceDpLine.setText(filename)
+        self.ui.statusbar.showMessage(f"Load file with potentiometer ratio {filename}") 
 
     def on_save_as(self):
         path = QFileDialog.getExistingDirectory(
