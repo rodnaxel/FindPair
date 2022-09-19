@@ -15,7 +15,7 @@ from ui.ui_mainwindow import Ui_MainWindow
 from core import findpair
 from core import utils
 
-__ver__ = '0.92'
+__ver__ = '0.95'
 
 logger = logging.getLogger("findpair")
 logger.setLevel(logging.DEBUG)
@@ -50,6 +50,7 @@ class MainWindow(QMainWindow):
 
         self.ui.calculateButton.clicked.connect(self.on_update)
         self.ui.plotButton.clicked.connect(self.on_open_plot)
+        self.ui.reportButton.clicked.connect(self.on_save_as)
         self.ui.exitButton.clicked.connect(self.exit)
 
         self.ui.sourceGainLine.textChanged.connect(self.source_changed)
@@ -117,22 +118,32 @@ class MainWindow(QMainWindow):
         self.ui.statusbar.showMessage(f"Load file with potentiometer ratio {filename}") 
 
     def on_save_as(self):
-        path = QFileDialog.getExistingDirectory(
-            self, "Open directory", "./data", QFileDialog.ShowDirsOnly
+        if not self.model:
+            self.ui.statusbar.showMessage("Error: No data for report")
+            return
+
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Save as", "./data", "Report files (.xlsx)" 
         )
         if not path:
             return
 
         # Prepare data for saving
+        headers = ["КУ", "К1 x K2", "K1", "К2", "КУ - К1 х К2", "S1", "S2"]
         datatable = []
         for r in range(self.model.rowCount()):
             row = []
             for c in range(self.model.columnCount()):
-                row.append(self.model.index(r, c).data())
-            datatable.append(row)
-        utils.to_csv(path + "/output.csv", datatable)
+                value = self.model.index(r, c).data()
+                if c in [5, 6]:
+                    value = hex(value)
+                row.append(value)
 
-        print(self.chart_dialog)
+            datatable.append(row)
+        
+        
+        #utils.to_csv(path + "/output.csv", datatable)
+        utils.to_excel(path, datatable, headers=headers)
         self.ui.statusbar.showMessage(f"Save to {path}")
 
 
@@ -157,11 +168,18 @@ class MainWindow(QMainWindow):
         self.ui.calculateButton.setEnabled(False)
         self.ui.statusbar.showMessage("Success handle data")
 
+        self.ui.reportButton.setEnabled(True)
+
         self.has_changed = False
 
     def on_open_plot(self):
         self.chart_dialog = ChartDialog(model=self.model)
         self.chart_dialog.exec()
+
+    def on_report(self):
+        filename = "./data/report.xlsx"
+
+        self.ui.statusbar.showMessage(f"Report data to file {filename}")
 
     @staticmethod
     def exit(self):

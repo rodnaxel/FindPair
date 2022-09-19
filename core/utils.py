@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import csv
-from openpyxl import load_workbook
+from openpyxl import Workbook, load_workbook
 
 
 def load_gain_from_excel(path, sheetname, lo, hi):
@@ -23,12 +23,25 @@ def load_potentiometer_gain(path):
             res.extend([float(x) for x in line.split(',')])
     return res
 
+
 def to_csv(filename, data, mode='w', newline=''):
     with open(filename, mode, newline=newline) as f:
         writer = csv.writer(f, delimiter=',')
         writer.writerows(data)
 
 
+def to_excel(filename, data, headers=None):
+    wb = Workbook()
+    ws = wb.active
+    
+    if headers:
+        ws.append(headers)
+
+    for row in data:
+        ws.append(row)
+
+    wb.save(filename)
+
+
 if __name__ == "__main__":
-    path = "../data/dp_gains.txt"
-    print(load_potentiometer_gain(path))
+    to_excel("", [])

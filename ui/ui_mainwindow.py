@@ -154,6 +154,12 @@ class Ui_MainWindow(object):
 
         self.buttonsLayout.addWidget(self.plotButton)
 
+        self.reportButton = QPushButton(self.centralwidget)
+        self.reportButton.setObjectName(u"reportButton")
+        self.reportButton.setEnabled(False)
+
+        self.buttonsLayout.addWidget(self.reportButton)
+
         self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.buttonsLayout.addItem(self.horizontalSpacer_3)
@@ -196,6 +202,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"|S1 - S2|:", None))
         self.calculateButton.setText(QCoreApplication.translate("MainWindow", u"Update", None))
         self.plotButton.setText(QCoreApplication.translate("MainWindow", u"Chart", None))
+        self.reportButton.setText(QCoreApplication.translate("MainWindow", u"Report", None))
         self.exitButton.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
     # retranslateUi
 
