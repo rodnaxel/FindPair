@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import os
+from datetime import datetime
+
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QPainter, QPixmap
 from PySide2.QtWidgets import *
@@ -126,8 +129,8 @@ class OtherChart(QtCharts.QChartView):
         self.axis_y.setTickInterval(10.0)
         self.axis_y.setTickCount(9)
         self.axis_y.setMinorTickCount(4)
-        self.axis_y.setLabelFormat("%.4f")
-        self.chart.addAxis(self.axis_y, Qt.AlignRight)
+        self.axis_y.setLabelFormat("%.2f")
+        self.chart.addAxis(self.axis_y, Qt.AlignLeft)
 
         if self.model:
             self.add_series("Deviation", 4)
@@ -167,8 +170,12 @@ class ChartDialog(QDialog):
 
     def setupUI(self):
         self._chart_view = LineChart(self.model)
+        self._chart_view.setWindowTitle("gains")
+
+
         self._chart_view2 = OtherChart(self.model)
-        self._chart_view2.setFixedHeight(400)
+        self._chart_view2.setWindowTitle("deviation")
+        self._chart_view2.setMaximumHeight(self.height() / 3)
 
         layout = QVBoxLayout(self)
         hbox = QHBoxLayout()
@@ -186,10 +193,15 @@ class ChartDialog(QDialog):
         layout.addWidget(self._chart_view)
         layout.addWidget(self._chart_view2)
 
-    def on_save(self):
-        pixmap = QPixmap(self._chart_view.size())
-        self._chart_view.render(pixmap)
-        pixmap.save("./data/graph.png", "PNG")
+    def on_save(self):    
+        output = "./data"
+        for chart in (w for w in self.children() if isinstance(w, QtCharts.QChartView)): 
+            pixmap = QPixmap(chart.size())
+            chart.render(pixmap)
+            filename = datetime.now().strftime("%Y%m%d")  + "_" + chart.windowTitle()
+            path = os.path.join(output, filename + ".png")
+            print(path)
+            pixmap.save(path, "PNG")
 
 
 
