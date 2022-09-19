@@ -37,6 +37,8 @@ class MainWindow(QMainWindow):
         self.has_changed = False
 
         self.settings = {}
+        #Fxime:
+        self.points = []
 
         self.model = None
 
@@ -50,6 +52,8 @@ class MainWindow(QMainWindow):
         self.ui.plotButton.clicked.connect(self.on_open_plot)
         self.ui.exitButton.clicked.connect(self.exit)
 
+        self.ui.sourceGainLine.textChanged.connect(self.source_changed)
+        self.ui.sourceDpLine.textChanged.connect(self.parameter_changed)
         self.ui.deltaSpin.textChanged.connect(self.parameter_changed)
         self.ui.ratioMSpin.textChanged.connect(self.parameter_changed)
         self.ui.sourceGainLine.textChanged.connect(self.parameter_changed)
@@ -91,7 +95,7 @@ class MainWindow(QMainWindow):
         if open_dialog.exec() == QDialog.Accepted:
             stg = open_dialog.settings()
 
-            if stg['filename'] and not self.is_load:
+            if stg['filename']:
                 self.is_load = True
                 self.settings.update(stg)
 
@@ -138,7 +142,7 @@ class MainWindow(QMainWindow):
 
         try:
             df, _ = findpair.make_it_beatiful(
-                self.settings, tolerance=tolerance, m=ratio_m)
+                self.settings, tolerance=tolerance, m=ratio_m, points=self.points)
         except Exception as e:
             logger.exception("Error in function update")
             df = None
@@ -162,6 +166,9 @@ class MainWindow(QMainWindow):
     @staticmethod
     def exit(self):
         QtCore.QCoreApplication.exit(0)
+
+    def source_changed(self):
+        self.ui.calculateButton.setEnabled(True)
 
     def parameter_changed(self):
         self.has_changed = True

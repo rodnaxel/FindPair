@@ -144,7 +144,6 @@ class OtherChart(QtCharts.QChartView):
 
         for x in range(self.model.rowCount()):
             y = float(self.model.index(x, columns).data())
-            print(y)
             series.append(x, y)
 
         self.chart.addSeries(series)

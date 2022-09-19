@@ -76,7 +76,11 @@ def make_it_beatiful(src, **param):
         src["column"] + src["max_row"]
     )
 
-    table = list(generate_rainbow_table(gain_dp))
+    #Fixme:
+    if not param['points']:
+        table = list(generate_rainbow_table(gain_dp))
+    else:
+        table = list(generate_rainbow_table(param['points']))
 
     gains = [x / param["m"] for x in gains]
 
