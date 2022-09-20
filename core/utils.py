@@ -42,18 +42,30 @@ def to_excel(path, data, tolerance, ratio_m, headers=None, chart=True):
     for row in data:
         ws.append(row)
         
+    max_row = len(data)
+
     chart  = LineChart()
     chart.title = f"Gain (|S1-S2| = {tolerance}, M = {ratio_m})"    
     chart.x_axis.title = "Step"
     chart.y_axis.title = "Gain"
-    data = Reference(ws, min_col=2, min_row=1, max_col=2, max_row=72)
-    data2 = Reference(ws, min_col=3, min_row=1, max_col=3, max_row=72)
+    data = Reference(ws, min_col=2, min_row=1, max_col=2, max_row=max_row)
+    data2 = Reference(ws, min_col=3, min_row=1, max_col=3, max_row=max_row)
     chart.add_data(data, titles_from_data=True)
     chart.add_data(data2, titles_from_data=True)
     ws.add_chart(chart, "L1")
 
-    wb.save(path)
+    chart  = LineChart()
+    chart.title = f"КУ - K1 x K2"    
+    chart.x_axis.title = "Step"
+    chart.y_axis.title = "Deviation"
+    data = Reference(ws, min_col=6, min_row=1, max_col=6, max_row=max_row)
+    chart.add_data(data, titles_from_data=True)
+    ws.add_chart(chart, "L15")
 
+    try:
+        wb.save(path)
+    except PermissionError:
+        raise PermissionError
 
 def make_directory(path):
     if not os.path.exists(path):

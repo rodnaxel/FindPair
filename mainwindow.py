@@ -130,22 +130,27 @@ class MainWindow(QMainWindow):
             return
         
         # Prepare data for saving
-        headers = ["№", "КУ", "К1 x K2", "K1", "К2", "КУ - К1 х К2", "S1", "S2"]
+        headers = ["№", "КУ", "К1 x K2", "K1", "K2", "КУ - К1 х К2", "S1 (dec)", "S1 (hex)", "S2 (dec)", "S2 (hex)"]
         rows = []
         for index, r in enumerate(range(self.model.rowCount()), 1):
             row = [index]
             for c in range(self.model.columnCount()):
                 value = self.model.index(r, c).data()
                 if c in [5, 6]:
-                    value = hex(value)
-                row.append(value)
+                    row.extend((value, hex(value)))
+                else:
+                    row.append(value)
 
             rows.append(row)
 
         tolerance = self.ui.deltaSpin.value()
         ratio_m = self.ui.ratioMSpin.value()
 
-        utils.to_excel(filename, rows, tolerance, ratio_m , headers=headers)
+        try:
+            utils.to_excel(filename, rows, tolerance, ratio_m , headers=headers)
+        except PermissionError:
+            QMessageBox().critical(self, "Error", "Сохранение недоступно. Закройте файл и повторите попытку")
+            self.ui.statusbar.showMessage(f"Error save report to {filename}")
         
         self.ui.statusbar.showMessage(f"Save to {filename}")
 
