@@ -2,8 +2,9 @@
 
 import os
 import csv
-from openpyxl import Workbook, load_workbook
 
+from openpyxl import Workbook, load_workbook
+from openpyxl.chart import LineChart, Reference
 
 def load_gain_from_excel(path, sheetname, lo, hi):
     """ Загрузка коэффициентов усиления из excel"""
@@ -31,8 +32,7 @@ def to_csv(filename, data, mode='w', newline=''):
         writer.writerows(data)
 
 
-def to_excel(path, data, headers=None):
-    make_directory(os.path.dirname(path))
+def to_excel(path, data, tolerance, ratio_m, headers=None, chart=True):
     wb = Workbook()
     ws = wb.active
     
@@ -41,6 +41,16 @@ def to_excel(path, data, headers=None):
 
     for row in data:
         ws.append(row)
+        
+    chart  = LineChart()
+    chart.title = f"Gain (|S1-S2| = {tolerance}, M = {ratio_m})"    
+    chart.x_axis.title = "Step"
+    chart.y_axis.title = "Gain"
+    data = Reference(ws, min_col=2, min_row=1, max_col=2, max_row=72)
+    data2 = Reference(ws, min_col=3, min_row=1, max_col=3, max_row=72)
+    chart.add_data(data, titles_from_data=True)
+    chart.add_data(data2, titles_from_data=True)
+    ws.add_chart(chart, "L1")
 
     wb.save(path)
 
