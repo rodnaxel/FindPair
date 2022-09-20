@@ -3,6 +3,8 @@
 import os
 from datetime import datetime
 
+from openpyxl import load_workbook
+
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QPainter, QPixmap
 from PySide2.QtWidgets import *
@@ -10,7 +12,7 @@ from PySide2.QtCharts import QtCharts
 
 from ui.opendialog import Ui_Dialog
 
-from openpyxl import load_workbook
+from core import utils
 
 
 class OpenDialog(QDialog):
@@ -194,7 +196,8 @@ class ChartDialog(QDialog):
         layout.addWidget(self._chart_view2)
 
     def on_save(self):    
-        output = "./data"
+        output = "./output"
+        utils.make_directory(output)
         for chart in (w for w in self.children() if isinstance(w, QtCharts.QChartView)): 
             pixmap = QPixmap(chart.size())
             chart.render(pixmap)

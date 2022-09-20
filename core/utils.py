@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import csv
 from openpyxl import Workbook, load_workbook
 
@@ -30,7 +31,8 @@ def to_csv(filename, data, mode='w', newline=''):
         writer.writerows(data)
 
 
-def to_excel(filename, data, headers=None):
+def to_excel(path, data, headers=None):
+    make_directory(os.path.dirname(path))
     wb = Workbook()
     ws = wb.active
     
@@ -40,8 +42,13 @@ def to_excel(filename, data, headers=None):
     for row in data:
         ws.append(row)
 
-    wb.save(filename)
+    wb.save(path)
 
+
+def make_directory(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
+    
 
 if __name__ == "__main__":
     to_excel("", [])
