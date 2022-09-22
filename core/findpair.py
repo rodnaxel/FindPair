@@ -30,13 +30,15 @@ gain_dp = [205, 125, 79, 69, 56, 47, 38, 32, 28, 26,
            1.07, 1.06, 1.06, 1.06, 1.05, 1.05, 1.04, 1.04, 1.03, 1.03,
            1.02, 1.02, 1.02, 1.01, 1.01, 1]
 
+class RainbowTable(object):
+    def __init__(self, gains):
+        self.gains = gains
 
-def generate_rainbow_table(gains):
-    """ Get digital potentiometer gains and return generating list in next format:
-    [(gain1, gain2), Total gain, difference between s1  and s2], (gain 1 index, gain2 index) """
-    for i, m in enumerate(gains):
-        for j, n in enumerate(gains[i:]):
-            yield ((m, n), m * n, abs(j), (i, j + i))
+    def __iter__(self):
+        for i, m in enumerate(self.gains):
+            for j, n in enumerate(self.gains[i:]):
+                yield ((m, n), m * n, abs(j), (i, j + i))
+
 
 def get_nearest_value(iterable, value):
     """ Возвращает ближайшее к заданному значение в списке"""
@@ -61,13 +63,6 @@ def get_amplifier_pairs(gains, deltas, table):
     return result
 
 
-def sigma(values):
-    n = len(values)
-    average = sum(values)
-    d = [pow((x - average), 2) for x in values]
-    return sqrt(sum(d) / n - 1)
-
-
 def make_it_beatiful(src, **param):
     gains = load_gain_from_excel(
         src['filename'],
@@ -78,9 +73,9 @@ def make_it_beatiful(src, **param):
 
     #Fixme:
     if not param['points']:
-        table = list(generate_rainbow_table(gain_dp))
+        table = RainbowTable(gain_dp)
     else:
-        table = list(generate_rainbow_table(param['points']))
+        table = RainbowTable(param['points'])
 
     gains = [x / param["m"] for x in gains]
 
@@ -101,4 +96,5 @@ def make_it_beatiful(src, **param):
             diff,
             s1,
             s2
-            ), sigma(diff)
+            )
+

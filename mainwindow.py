@@ -160,7 +160,7 @@ class MainWindow(QMainWindow):
         ratio_m = self.ui.ratioMSpin.value()
 
         try:
-            df, _ = findpair.make_it_beatiful(
+            df = findpair.make_it_beatiful(
                 self.settings, tolerance=tolerance, m=ratio_m, points=self.points)
         except Exception as e:
             logger.exception("Error in function update")
@@ -186,7 +186,6 @@ class MainWindow(QMainWindow):
 
     def on_report(self):
         filename = "./data/report.xlsx"
-
         self.ui.statusbar.showMessage(f"Report data to file {filename}")
 
     @staticmethod
