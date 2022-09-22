@@ -35,6 +35,10 @@ class RainbowTable(object):
         self.gains = gains
 
     def __iter__(self):
+        """
+        return:
+            ((gain1, gain2), gain1 x gain2, S1 - S2, (Step 1,Step 2))
+        """
         for i, m in enumerate(self.gains):
             for j, n in enumerate(self.gains[i:]):
                 yield ((m, n), m * n, abs(j), (i, j + i))
@@ -45,13 +49,15 @@ def get_nearest_value(iterable, value):
     return min(iterable, key=lambda x: abs(x - value))
 
 
-def find_pair(gain, table, delta):
-    a = [i for i in table if i[2] <= delta]
-    b = [i[1] for i in a]
-    near = get_nearest_value(b, gain)
-    index = b.index(near)
-    res = a[index]
-    return res[0], res[3]
+def find_pair(gain, table, limit):
+    filtered = [item for item in table if item[2] <= limit]
+    calculated_gains = [item[1] for item in filtered]
+    near = get_nearest_value(calculated_gains, gain)
+    index = calculated_gains.index(near)
+
+    dp_gains,*_, dp_steps = filtered[index]
+    
+    return dp_gains, dp_steps
 
 
 def get_amplifier_pairs(gains, deltas, table):
