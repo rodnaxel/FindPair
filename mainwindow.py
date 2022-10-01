@@ -165,7 +165,7 @@ class MainWindow(QMainWindow):
         except Exception as e:
             logger.exception("Error in function update")
             df = None
-            self.ui.statusbar.showMessage("Error handle data")
+            self.ui.statusbar.showMessage("Error update data")
 
         if not df:
             return
@@ -174,7 +174,7 @@ class MainWindow(QMainWindow):
         self.ui.tableView.setModel(self.model)
 
         self.ui.calculateButton.setEnabled(False)
-        self.ui.statusbar.showMessage("Success handle data")
+        self.ui.statusbar.showMessage("Data updated")
 
         self.ui.reportButton.setEnabled(True)
 
