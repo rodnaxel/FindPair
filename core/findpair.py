@@ -95,7 +95,7 @@ def make_it_beatiful(src, **param):
     step1 = [x[4] for x in result]
     step2 = [x[5] for x in result]
 
-    return (gains,
+    return (normalize_gains,
             k1xk2,
             k1,
             k2,
