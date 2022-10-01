@@ -7,6 +7,7 @@ from openpyxl import load_workbook
 
 from PySide2.QtGui import QPixmap
 from PySide2.QtWidgets import *
+from PySide2 import QtCore
 from PySide2.QtCharts import QtCharts
 
 from ui.charts import LineChart, DeviationChart
@@ -61,6 +62,7 @@ class ChartDialog(QDialog):
         self.model = model
 
         self.setModal(True)
+        self.setWindowFlag(QtCore.Qt.WindowMaximizeButtonHint)
         self.setSizeGripEnabled(True)
         self.resize(800, 800)
 
@@ -75,7 +77,7 @@ class ChartDialog(QDialog):
 
         self._extra_chart = DeviationChart(self.model)
         self._extra_chart.setWindowTitle("deviation")
-        self._extra_chart.setMaximumHeight(self.height() / 3)
+        self._extra_chart.setMaximumHeight(self.height() / 2 - 1)
 
         layout = QVBoxLayout(self)
         hbox = QHBoxLayout()
