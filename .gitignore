@@ -10,3 +10,5 @@ dist/
 *.bat
 *.ps1
 *.csv
+
+*.code*
