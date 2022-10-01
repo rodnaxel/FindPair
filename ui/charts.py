@@ -3,16 +3,41 @@ from PySide2.QtCore import Qt
 from PySide2.QtGui import QPainter
 
 
-class LineChart(QtCharts.QChartView):
+class BaseChartView(QtCharts.QChartView):
+    def __init__(self, **options):
+        super(BaseChartView, self).__init__()
+
+        self.chart = QtCharts.QChart()
+        self.chart.setTitle("Gain(K1xK2)")
+
+        self.add_axis_x()
+        self.add_axis_y()
+
+        self.setChart(self.chart)
+        self.setRenderHint(QPainter.Antialiasing)
+
+    def add_axis_x(self):
+        raise NotImplementedError()
+    
+    def add_axis_y(self):
+        raise NotImplementedError()
+
+    def add_series(self):
+        raise NotImplementedError()
+
+
+class LineChart(BaseChartView):
     def __init__(self, model):
         super(LineChart, self).__init__()
 
         self.model = model
 
-        self.chart = QtCharts.QChart()
-        self.chart.setTitle("Gain(K1xK2)")
+        if self.model:
+            self.add_series("Gain", 0)
+            self.add_series("K1xK2", 1)
 
-        # Setting X-axis
+
+    def add_axis_x(self):
         self.axis_x = QtCharts.QValueAxis()
         self.axis_x.setTitleText("Step")
         self.axis_x.setRange(0, 80)
@@ -22,7 +47,7 @@ class LineChart(QtCharts.QChartView):
         self.axis_x.setLabelFormat("%d")
         self.chart.addAxis(self.axis_x, Qt.AlignBottom)
 
-        # Setting Y-axis
+    def add_axis_y(self):
         self.axis_y = QtCharts.QValueAxis()
         self.axis_y.setTitleText("Gain")
         self.axis_y.setRange(0, 2400)
@@ -31,13 +56,6 @@ class LineChart(QtCharts.QChartView):
         self.axis_y.setMinorTickCount(4)
         self.axis_y.setLabelFormat("%.2f")
         self.chart.addAxis(self.axis_y, Qt.AlignLeft)
-
-        if self.model:
-            self.add_series("Gain", 0)
-            self.add_series("K1xK2", 1)
-
-        self.setChart(self.chart)
-        self.setRenderHint(QPainter.Antialiasing)
 
     def add_series(self, name, columns, attachedX=None, attachedY=None):
         series = QtCharts.QLineSeries()
@@ -53,16 +71,16 @@ class LineChart(QtCharts.QChartView):
         series.attachAxis(attachedY or self.axis_y)
 
 
-class OtherChart(QtCharts.QChartView):
+class DeviationChart(BaseChartView):
     def __init__(self, model):
-        super(OtherChart, self).__init__()
+        super(DeviationChart, self).__init__()
 
         self.model = model
+      
+        if self.model:
+            self.add_series("Deviation", 4)
 
-        self.chart = QtCharts.QChart()
-        self.chart.setTitle("Gain(K1xK2)")
-
-        # Setting X-axis
+    def add_axis_x(self):
         self.axis_x = QtCharts.QValueAxis()
         self.axis_x.setTitleText("Step")
         self.axis_x.setRange(0, 80)
@@ -72,7 +90,7 @@ class OtherChart(QtCharts.QChartView):
         self.axis_x.setLabelFormat("%d")
         self.chart.addAxis(self.axis_x, Qt.AlignBottom)
 
-        # Setting Y2-axis
+    def add_axis_y(self):
         self.axis_y = QtCharts.QValueAxis()
         self.axis_y.setTitleText("Deviation")
         self.axis_y.setRange(-60.0, 60.0)
@@ -81,13 +99,6 @@ class OtherChart(QtCharts.QChartView):
         self.axis_y.setMinorTickCount(4)
         self.axis_y.setLabelFormat("%.2f")
         self.chart.addAxis(self.axis_y, Qt.AlignLeft)
-
-        if self.model:
-            print(f"{self.model}, {self.model == True}, Other Chart")
-            self.add_series("Deviation", 4)
-
-        self.setChart(self.chart)
-        self.setRenderHint(QPainter.Antialiasing)
 
     def add_series(self, name, columns, attachedX=None, attachedY=None):
         series = QtCharts.QLineSeries()

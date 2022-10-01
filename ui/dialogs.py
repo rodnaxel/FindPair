@@ -9,7 +9,7 @@ from PySide2.QtGui import QPixmap
 from PySide2.QtWidgets import *
 from PySide2.QtCharts import QtCharts
 
-from ui.charts import LineChart, OtherChart
+from ui.charts import LineChart, DeviationChart
 from ui.opendialog import Ui_Dialog
 
 from core import utils
@@ -70,13 +70,12 @@ class ChartDialog(QDialog):
 
 
     def setupUI(self):
-        self._chart_view = LineChart(self.model)
-        self._chart_view.setWindowTitle("gains")
+        self._primary_chart = LineChart(self.model)
+        self._primary_chart.setWindowTitle("gains")
 
-
-        self._chart_view2 = OtherChart(self.model)
-        self._chart_view2.setWindowTitle("deviation")
-        self._chart_view2.setMaximumHeight(self.height() / 3)
+        self._extra_chart = DeviationChart(self.model)
+        self._extra_chart.setWindowTitle("deviation")
+        self._extra_chart.setMaximumHeight(self.height() / 3)
 
         layout = QVBoxLayout(self)
         hbox = QHBoxLayout()
@@ -91,8 +90,8 @@ class ChartDialog(QDialog):
         hbox.addSpacerItem(spacer)
 
         layout.addLayout(hbox)
-        layout.addWidget(self._chart_view)
-        layout.addWidget(self._chart_view2)
+        layout.addWidget(self._primary_chart)
+        layout.addWidget(self._extra_chart)
 
     def on_save(self):    
         output = "./output"
