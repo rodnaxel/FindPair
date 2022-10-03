@@ -83,7 +83,7 @@ def make_it_beatiful(src, **param):
     else:
         table = RainbowTable(param['points'])
 
-    normalize_gains = [gain / param["m"] for gain in gains]
+    normalize_gains = [gain / param.get('m', 1) for gain in gains]
 
     result = get_amplifier_pairs(normalize_gains, param["tolerance"], table)
 
