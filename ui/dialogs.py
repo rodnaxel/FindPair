@@ -89,10 +89,10 @@ class ChartDialog(QDialog):
         layout = QVBoxLayout(self)
         hbox = QHBoxLayout()
 
-        self.saveButton = QPushButton("Save")
+        self.saveButton = QPushButton(self.tr("Save"))
         hbox.addWidget(self.saveButton)
 
-        self.clearButton = QPushButton("Clear")
+        self.clearButton = QPushButton(self.tr("Clear"))
         hbox.addWidget(self.clearButton)
 
         spacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)

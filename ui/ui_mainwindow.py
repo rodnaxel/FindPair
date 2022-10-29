@@ -18,6 +18,12 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(800, 600)
+        self.actionOpen = QAction(MainWindow)
+        self.actionOpen.setObjectName(u"actionOpen")
+        self.actionSave_as = QAction(MainWindow)
+        self.actionSave_as.setObjectName(u"actionSave_as")
+        self.actionAbout = QAction(MainWindow)
+        self.actionAbout.setObjectName(u"actionAbout")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_2 = QVBoxLayout(self.centralwidget)
@@ -144,10 +150,17 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 800, 21))
+        self.menuFile = QMenu(self.menubar)
+        self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menuFile.addAction(self.actionOpen)
+        self.menuFile.addAction(self.actionSave_as)
+        self.menuFile.addAction(self.actionAbout)
 
         self.retranslateUi(MainWindow)
 
@@ -156,6 +169,9 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Find Pair", None))
+        self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open...", None))
+        self.actionSave_as.setText(QCoreApplication.translate("MainWindow", u"Save as...", None))
+        self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.sourceGroup.setTitle(QCoreApplication.translate("MainWindow", u"Data:", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Data File:", None))
         self.sourceGainLine.setPlaceholderText("")
@@ -168,5 +184,6 @@ class Ui_MainWindow(object):
         self.plotButton.setText(QCoreApplication.translate("MainWindow", u"Chart", None))
         self.reportButton.setText(QCoreApplication.translate("MainWindow", u"Report", None))
         self.exitButton.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
+        self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 

@@ -5,7 +5,10 @@ import logging
 
 from PySide2 import QtCore
 from PySide2.QtCore import QTranslator
-from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QAction, QHeaderView, QFileDialog, QDialog, QMessageBox
+from PySide2.QtGui import QGuiApplication
+from PySide2.QtWidgets import (
+    QApplication, QWidget, QMainWindow, QAction, QHeaderView, QFileDialog, QDialog, QMessageBox)
+
 from PySide2.QtCharts import QtCharts
 
 from models.table_model import CustomTableModel
@@ -30,12 +33,15 @@ logger.addHandler(fileHandler)
 # logger.addHandler(stream_handler)
 
 
-
-
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
+        # !TODO: Translator
+        # self._translator = QTranslator()
+        # self._translator.load('./translations/language_ru.qm')
+        # QGuiApplication.installTranslator(self._translator)
+        # QGuiApplication.removeTranslator(self._translator)
+        # self.ui.retranslateUi(self)
 
         self.is_load = False
         self.has_changed = False
@@ -68,21 +74,13 @@ class MainWindow(QMainWindow):
         self.createTableView()
 
     def createMenuBar(self):
-        self.file_menu = self.ui.menubar.addMenu(self.tr("File"))
-
-        open_action = QAction("Open...", self)
-        open_action.triggered.connect(self.on_open_preferences)
-        self.file_menu.addAction(open_action)
-
-        save_as_action = QAction("Save as...", self)
-        save_as_action.triggered.connect(self.on_save_as)
-        self.file_menu.addAction(save_as_action)
-
-        about_action = QAction("About...", self)
-        about_action.triggered.connect(
-            lambda: QMessageBox().about(self, "About FindPairs", f"Version: {__ver__}")
+        self.ui.actionOpen.triggered.connect(self.on_open_preferences)
+        self.ui.actionSave_as.triggered.connect(self.on_save_as)
+        self.ui.actionAbout.triggered.connect(
+            lambda: QMessageBox().about(self,
+                                        self.tr("About FindPairs"),
+                                        self.tr(f"Version: {__ver__}"))
         )
-        self.file_menu.addAction(about_action)
 
     def createTableView(self):
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -196,10 +194,10 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication([])
 
-    if os.path.exists('./translations/language_ru.qm'):
-        translator = QTranslator(app)
-        translator.load('./translations/language_ru.qm')
-        app.installTranslator(translator)
+    # if os.path.exists('./translations/language_ru.qm'):
+    #     translator = QTranslator(app)
+    #     translator.load('./translations/language_ru.qm')
+    #     app.installTranslator(translator)
 
     mw = MainWindow()
     mw.show()

@@ -67,7 +67,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.py" line="71"/>
+        <location filename="mainwindow.ui" line="248"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
@@ -120,6 +120,26 @@
         <location filename="mainwindow.ui" line="229"/>
         <source>Exit</source>
         <translation>Выход</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.py" line="78"/>
+        <source>About FindPairs</source>
+        <translation>О Find Pair</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="259"/>
+        <source>Open...</source>
+        <translation>Открыть...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="264"/>
+        <source>Save as...</source>
+        <translation>Сохранить как...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="269"/>
+        <source>About</source>
+        <translation>Справка</translation>
     </message>
 </context>
 </TS>
