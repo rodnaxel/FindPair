@@ -77,11 +77,16 @@ def make_it_beatiful(src, **param):
         src["column"] + src["max_row"]
     )
 
-    #Fixme:
-    if not param['points']:
-        table = RainbowTable(gain_dp)
+    if param['points']:
+        points = load_gain_from_excel(
+            param['points']['filename'],
+            param['points']['sheet'],
+            param['points']["column"] + param['points']["min_row"],
+            param['points']["column"] + param['points']["max_row"]
+        )
+        table = RainbowTable(points)
     else:
-        table = RainbowTable(param['points'])
+        table = RainbowTable(gain_dp)
 
     normalize_gains = [gain / param.get('m', 1) for gain in gains]
 

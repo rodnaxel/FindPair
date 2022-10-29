@@ -37,8 +37,8 @@ class MainWindow(QMainWindow):
         self.has_changed = False
 
         self.settings = {}
-        #Fxime:
-        self.points = []
+        # Fxime:
+        self.points = {}
 
         self.model = None
 
@@ -106,16 +106,28 @@ class MainWindow(QMainWindow):
                 )
 
     def on_select_ratio_file(self):
-        filename, _ = QFileDialog().getOpenFileName(
-            dir="./data/"
-        )
+        """
+        C3:258
+        """
+        open_dialog = OpenDialog()
+        if open_dialog.exec() == QDialog.Accepted:
+            stg = open_dialog.settings()
+            self.ui.sourceDpLine.setText(stg['filename'])
+            self.points.update(stg)
+            self.ui.statusbar.showMessage(
+                f"Success load file {self.settings['filename']}"
+            )
 
-        if not filename:
-            return
+        # filename, _ = QFileDialog().getOpenFileName(
+        #     dir="./data/"
+        # )
 
-        self.points = utils.load_potentiometer_gain(filename)
-        self.ui.sourceDpLine.setText(filename)
-        self.ui.statusbar.showMessage(f"Load file with potentiometer ratio {filename}") 
+        # if not filename:
+        #     return
+
+        # self.points = utils.load_potentiometer_gain(filename)
+        # self.ui.sourceDpLine.setText(filename)
+        # self.ui.statusbar.showMessage(f"Load file with potentiometer ratio {filename}") 
 
     def on_save_as(self):
         if not self.model:
@@ -123,12 +135,12 @@ class MainWindow(QMainWindow):
             return
 
         filename, _ = QFileDialog.getSaveFileName(
-            self, "Save as", ".", "Excel (*.xlsx)" 
+            self, "Save as", ".", "Excel (*.xlsx)"
         )
 
         if not filename:
             return
-        
+
         # Prepare data for saving
         headers = ["№", "КУ", "К1 x K2", "K1", "K2", "КУ - К1 х К2", "S1 (dec)", "S1 (hex)", "S2 (dec)", "S2 (hex)"]
         rows = []
@@ -147,13 +159,12 @@ class MainWindow(QMainWindow):
         ratio_m = self.ui.ratioMSpin.value()
 
         try:
-            utils.to_excel(filename, rows, tolerance, ratio_m , headers=headers)
+            utils.to_excel(filename, rows, tolerance, ratio_m, headers=headers)
         except PermissionError:
             QMessageBox().critical(self, "Error", "Сохранение недоступно. Закройте файл и повторите попытку")
             self.ui.statusbar.showMessage(f"Error save report to {filename}")
-        
-        self.ui.statusbar.showMessage(f"Save to {filename}")
 
+        self.ui.statusbar.showMessage(f"Save to {filename}")
 
     def on_update(self):
         tolerance = self.ui.deltaSpin.value()
