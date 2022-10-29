@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from math import sqrt, pow
-from core.utils import load_gain_from_excel
+from core.utils import load_data_from_excel
 
 gain_dp = [205, 125, 79, 69, 56, 47, 38, 32, 28, 26,
            25, 24, 22, 20, 19, 16.5, 15.6, 15, 14, 13.5,
@@ -69,28 +69,25 @@ def get_amplifier_pairs(gains, deltas, table):
     return result
 
 
-def make_it_beatiful(src, **param):
-    gains = load_gain_from_excel(
-        src['filename'],
-        src['sheet'],
-        src["column"] + src["min_row"],
-        src["column"] + src["max_row"]
+def make_it_beatiful(stg, **extra):
+    gains = load_data_from_excel(
+        stg['filename'],
+        stg['gain']['sheet'],
+        stg['gain']["column"] + stg['gain']["min_row"],
+        stg['gain']["column"] + stg['gain']["max_row"]
     )
 
-    if param['points']:
-        points = load_gain_from_excel(
-            param['points']['filename'],
-            param['points']['sheet'],
-            param['points']["column"] + param['points']["min_row"],
-            param['points']["column"] + param['points']["max_row"]
-        )
-        table = RainbowTable(points)
-    else:
-        table = RainbowTable(gain_dp)
+    ratios = load_data_from_excel(
+        stg['filename'],
+        stg['ratio']['sheet'],
+        stg['ratio']["column"] + stg['ratio']["min_row"],
+        stg['ratio']["column"] + stg['ratio']["max_row"]
+    )
+    table = RainbowTable(ratios)
 
-    normalize_gains = [gain / param.get('m', 1) for gain in gains]
+    normalize_gains = [gain / extra.get('m', 1) for gain in gains]
 
-    result = get_amplifier_pairs(normalize_gains, param["tolerance"], table)
+    result = get_amplifier_pairs(normalize_gains, extra["tolerance"], table)
 
     # [gains, k1xk2, k1, k2, diff gain, s1, s2 ]
     k1 = [x[0] for x in result]

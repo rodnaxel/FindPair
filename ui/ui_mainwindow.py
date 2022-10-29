@@ -50,51 +50,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addLayout(self.selectPathLayout)
 
-        self.selectPathLayout_3 = QHBoxLayout()
-        self.selectPathLayout_3.setObjectName(u"selectPathLayout_3")
-        self.label_6 = QLabel(self.sourceGroup)
-        self.label_6.setObjectName(u"label_6")
-        self.label_6.setMinimumSize(QSize(80, 0))
-
-        self.selectPathLayout_3.addWidget(self.label_6)
-
-        self.sourceDpLine = QLineEdit(self.sourceGroup)
-        self.sourceDpLine.setObjectName(u"sourceDpLine")
-        self.sourceDpLine.setAutoFillBackground(False)
-        self.sourceDpLine.setFrame(True)
-        self.sourceDpLine.setReadOnly(True)
-
-        self.selectPathLayout_3.addWidget(self.sourceDpLine)
-
-        self.selectDpButton = QPushButton(self.sourceGroup)
-        self.selectDpButton.setObjectName(u"selectDpButton")
-
-        self.selectPathLayout_3.addWidget(self.selectDpButton)
-
-
-        self.verticalLayout_4.addLayout(self.selectPathLayout_3)
-
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-
-        self.verticalLayout_4.addLayout(self.horizontalLayout)
-
-
-        self.verticalLayout_2.addWidget(self.sourceGroup)
-
-        self.parameterBox = QGroupBox(self.centralwidget)
-        self.parameterBox.setObjectName(u"parameterBox")
-        self.horizontalLayout_2 = QHBoxLayout(self.parameterBox)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.ratioMLayout = QHBoxLayout()
         self.ratioMLayout.setObjectName(u"ratioMLayout")
-        self.label_3 = QLabel(self.parameterBox)
+        self.label_3 = QLabel(self.sourceGroup)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setMinimumSize(QSize(50, 0))
 
         self.ratioMLayout.addWidget(self.label_3)
 
-        self.ratioMSpin = QDoubleSpinBox(self.parameterBox)
+        self.ratioMSpin = QDoubleSpinBox(self.sourceGroup)
         self.ratioMSpin.setObjectName(u"ratioMSpin")
         self.ratioMSpin.setMinimumSize(QSize(60, 0))
         self.ratioMSpin.setButtonSymbols(QAbstractSpinBox.PlusMinus)
@@ -105,18 +69,22 @@ class Ui_MainWindow(object):
 
         self.ratioMLayout.addWidget(self.ratioMSpin)
 
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_2.addLayout(self.ratioMLayout)
+        self.ratioMLayout.addItem(self.horizontalSpacer_2)
+
+
+        self.verticalLayout_4.addLayout(self.ratioMLayout)
 
         self.deltaLayout = QHBoxLayout()
         self.deltaLayout.setObjectName(u"deltaLayout")
-        self.label_2 = QLabel(self.parameterBox)
+        self.label_2 = QLabel(self.sourceGroup)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setMinimumSize(QSize(50, 0))
 
         self.deltaLayout.addWidget(self.label_2)
 
-        self.deltaSpin = QSpinBox(self.parameterBox)
+        self.deltaSpin = QSpinBox(self.sourceGroup)
         self.deltaSpin.setObjectName(u"deltaSpin")
         self.deltaSpin.setMinimumSize(QSize(60, 0))
         self.deltaSpin.setMaximum(255)
@@ -129,10 +97,10 @@ class Ui_MainWindow(object):
         self.deltaLayout.addItem(self.horizontalSpacer)
 
 
-        self.horizontalLayout_2.addLayout(self.deltaLayout)
+        self.verticalLayout_4.addLayout(self.deltaLayout)
 
 
-        self.verticalLayout_2.addWidget(self.parameterBox)
+        self.verticalLayout_2.addWidget(self.sourceGroup)
 
         self.tableView = QTableView(self.centralwidget)
         self.tableView.setObjectName(u"tableView")
@@ -189,13 +157,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Find Pair", None))
         self.sourceGroup.setTitle(QCoreApplication.translate("MainWindow", u"Data:", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Gain File:", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Data File:", None))
         self.sourceGainLine.setPlaceholderText("")
         self.selectButton.setText(QCoreApplication.translate("MainWindow", u"Select...", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Gain DP File:", None))
-        self.sourceDpLine.setPlaceholderText("")
-        self.selectDpButton.setText(QCoreApplication.translate("MainWindow", u"Select...", None))
-        self.parameterBox.setTitle(QCoreApplication.translate("MainWindow", u"Parameters:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"M:", None))
         self.ratioMSpin.setSpecialValueText("")
         self.ratioMSpin.setPrefix("")

@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from typing import Iterable
 from openpyxl import load_workbook
 
-from core.utils import load_gain_from_excel
+from core.utils import load_data_from_excel
 
 
 class Gain(Iterable):
@@ -11,7 +11,7 @@ class Gain(Iterable):
 
     @classmethod
     def from_excel(cls, path, **param):
-        data = load_gain_from_excel(
+        data = load_data_from_excel(
             path,
             param['sheet'],
             param["column"] + param["min_row"],

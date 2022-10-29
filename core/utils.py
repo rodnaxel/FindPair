@@ -6,7 +6,7 @@ import csv
 from openpyxl import Workbook, load_workbook
 from openpyxl.chart import LineChart, Reference
 
-def load_gain_from_excel(path, sheetname, lo, hi):
+def load_data_from_excel(path, sheetname, lo, hi):
     """ Загрузка коэффициентов усиления из excel"""
     wb = load_workbook(path, data_only=True)
     sheet = wb[sheetname]

@@ -11,7 +11,7 @@ from PySide2 import QtCore
 from PySide2.QtCharts import QtCharts
 
 from ui.charts import LineChart, DeviationChart
-from ui.opendialog import Ui_Dialog
+from ui.preferencesdialog import Ui_Dialog
 
 from core import utils
 
@@ -23,9 +23,9 @@ class OpenDialog(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
-        self.ui.columnBox.setText("N")
-        self.ui.rangeMinBox.setText("4")
-        self.ui.rangeMaxBox.setText("75")
+        # self.ui.columnBox.setText("N")
+        # self.ui.rangeMinBox.setText("4")
+        # self.ui.rangeMaxBox.setText("75")
 
     # Connect signal/slot
         self.ui.browseButton.clicked.connect(self.on_browse)
@@ -38,20 +38,27 @@ class OpenDialog(QDialog):
             return
 
         self.ui.filenameBox.setText(filename)
-        
+
         wb = load_workbook(filename, data_only=True)
-        self.ui.sheetBox.addItems(wb.sheetnames)
+        self.sheetnames = wb.sheetnames
+        self.ui.gainSheetBox.addItems(self.sheetnames)
+        self.ui.ratioSheetBox.addItems(self.sheetnames)
 
-        # FIXME: только для отладки
-        self.ui.sheetBox.setCurrentIndex(len(wb.sheetnames) - 1)
-
-    def settings(self):    
+    def read_settings(self):
         return {
             "filename": self.ui.filenameBox.text(),
-            "sheet": self.ui.sheetBox.currentText(),
-            "column": self.ui.columnBox.text(),
-            "min_row": self.ui.rangeMinBox.text(),
-            "max_row": self.ui.rangeMaxBox.text(),
+            "gain": {
+                "sheet": self.ui.gainSheetBox.currentText(),
+                "column": self.ui.gainColumnBox.text(),
+                "min_row": self.ui.gainRangeMinBox.text(),
+                "max_row": self.ui.gainRangeMaxBox.text()
+            },
+            "ratio": {
+                "sheet": self.ui.ratioSheetBox.currentText(),
+                "column": self.ui.ratioColumnBox.text(),
+                "min_row": self.ui.ratioRangeMinBox.text(),
+                "max_row": self.ui.ratioRangeMaxBox.text()
+            }
         }
 
 
