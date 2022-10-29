@@ -17,8 +17,8 @@ from core import utils
 
 
 class OpenDialog(QDialog):
-    def __init__(self, stg=None) -> None:
-        super(OpenDialog, self).__init__()
+    def __init__(self, parent, stg=None) -> None:
+        super(OpenDialog, self).__init__(parent)
 
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
@@ -114,8 +114,12 @@ class ChartDialog(QDialog):
             pixmap.save(path, "PNG")
 
 
-
-
+if __name__ == "__main__":
+    import sys
+    app = QApplication([])
+    mw = OpenDialog()
+    mw.show()
+    sys.exit(app.exec_())
 
 
         

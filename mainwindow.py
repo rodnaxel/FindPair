@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import sys
+import sys, os
 import logging
 
 from PySide2 import QtCore
-from PySide2.QtWidgets import QApplication, QMainWindow, QAction, QHeaderView, QFileDialog, QDialog, QMessageBox
+from PySide2.QtCore import QTranslator
+from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QAction, QHeaderView, QFileDialog, QDialog, QMessageBox
 from PySide2.QtCharts import QtCharts
 
 from models.table_model import CustomTableModel
@@ -27,6 +28,9 @@ logger.addHandler(fileHandler)
 # stream_handler = logging.StreamHandler(stream=sys.stdout)
 # stream_handler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
 # logger.addHandler(stream_handler)
+
+
+
 
 
 class MainWindow(QMainWindow):
@@ -64,7 +68,7 @@ class MainWindow(QMainWindow):
         self.createTableView()
 
     def createMenuBar(self):
-        self.file_menu = self.ui.menubar.addMenu("File")
+        self.file_menu = self.ui.menubar.addMenu(self.tr("File"))
 
         open_action = QAction("Open...", self)
         open_action.triggered.connect(self.on_open_preferences)
@@ -89,7 +93,7 @@ class MainWindow(QMainWindow):
         self.ui.tableView.verticalHeader().setDefaultAlignment(QtCore.Qt.AlignVCenter | QtCore.Qt.AlignJustify)
 
     def on_open_preferences(self):
-        open_dialog = OpenDialog()
+        open_dialog = OpenDialog(self)
 
         if open_dialog.exec() == QDialog.Accepted:
             stg = open_dialog.read_settings()
@@ -191,6 +195,12 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication([])
+
+    if os.path.exists('./translations/language_ru.qm'):
+        translator = QTranslator(app)
+        translator.load('./translations/language_ru.qm')
+        app.installTranslator(translator)
+
     mw = MainWindow()
     mw.show()
     sys.exit(app.exec_())

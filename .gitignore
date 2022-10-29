@@ -6,9 +6,13 @@ dist/
 *.user*
 *.log
 *.err
+*.log
+*.spec
 *.bak
 *.bat
 *.ps1
 *.csv
+
+*.autosave
 
 *.code*
