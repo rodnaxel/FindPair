@@ -23,10 +23,6 @@ class OpenDialog(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
-        # self.ui.columnBox.setText("N")
-        # self.ui.rangeMinBox.setText("4")
-        # self.ui.rangeMaxBox.setText("75")
-
     # Connect signal/slot
         self.ui.browseButton.clicked.connect(self.on_browse)
 
@@ -60,6 +56,7 @@ class OpenDialog(QDialog):
                 "max_row": self.ui.ratioRangeMaxBox.text()
             }
         }
+
 
 
 class ChartDialog(QDialog):

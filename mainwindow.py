@@ -19,7 +19,7 @@ from ui.ui_mainwindow import Ui_MainWindow
 from core import findpair
 from core import utils
 
-__ver__ = '0.96'
+__ver__ = '1.1'
 
 logger = logging.getLogger("findpair")
 logger.setLevel(logging.DEBUG)
@@ -36,6 +36,7 @@ logger.addHandler(fileHandler)
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
+
         # !TODO: Translator
         # self._translator = QTranslator()
         # self._translator.load('./translations/language_ru.qm')
@@ -47,8 +48,6 @@ class MainWindow(QMainWindow):
         self.has_changed = False
 
         self.settings = {}
-        # Fxime:
-        self.points = {}
 
         self.model = None
 
@@ -67,11 +66,15 @@ class MainWindow(QMainWindow):
         self.ui.ratioMSpin.textChanged.connect(self.parameter_changed)
         self.ui.sourceGainLine.textChanged.connect(self.parameter_changed)
 
+        self.open_dialog.accepted.connect(self.dialog_accepted)
+
     def createUi(self):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.createMenuBar()
         self.createTableView()
+
+        self.open_dialog = OpenDialog(self)
 
     def createMenuBar(self):
         self.ui.actionOpen.triggered.connect(self.on_open_preferences)
@@ -90,20 +93,19 @@ class MainWindow(QMainWindow):
         self.ui.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.tableView.verticalHeader().setDefaultAlignment(QtCore.Qt.AlignVCenter | QtCore.Qt.AlignJustify)
 
+    def dialog_accepted(self):
+        stg = self.open_dialog.read_settings()
+        if stg['filename']:
+            self.is_load = True
+            self.settings.update(stg)
+            self.ui.sourceGainLine.setText(self.settings['filename'])
+            self.setWindowTitle(
+                "{0} {1}".format(self.windowTitle(), self.settings['filename'])
+            )
+            self.parameter_changed()
+
     def on_open_preferences(self):
-        open_dialog = OpenDialog(self)
-
-        if open_dialog.exec() == QDialog.Accepted:
-            stg = open_dialog.read_settings()
-
-            if stg['filename']:
-                self.is_load = True
-                self.settings.update(stg)
-
-                self.ui.sourceGainLine.setText(self.settings['filename'])
-                self.setWindowTitle(
-                    "{0} {1}".format(self.windowTitle(), self.settings['filename'])
-                )
+        self.open_dialog.show()
 
     def on_save_as(self):
         if not self.model:
@@ -146,18 +148,15 @@ class MainWindow(QMainWindow):
         tolerance = self.ui.deltaSpin.value()
         ratio_m = self.ui.ratioMSpin.value()
 
-        df = findpair.make_it_beatiful(
-            self.settings, tolerance=tolerance, m=ratio_m)
-
-        # try:
-        #     df = findpair.make_it_beatiful(
-        #         self.settings, tolerance=tolerance, m=ratio_m)
-        # except Exception as e:
-        #     logger.exception("Error in function update")
-        #     df = None
-        #     self.ui.statusbar.showMessage("Error update data")
+        try:
+            df = findpair.make_it_beatiful(
+                self.settings, tolerance=tolerance, m=ratio_m)
+        except KeyError:
+            self.ui.statusbar.showMessage("Not enough! Please, check settings")
+            return
 
         if not df:
+            self.ui.statusbar.showMessage("No data")
             return
 
         self.model = CustomTableModel(df)
@@ -193,12 +192,8 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication([])
-
-    # if os.path.exists('./translations/language_ru.qm'):
-    #     translator = QTranslator(app)
-    #     translator.load('./translations/language_ru.qm')
-    #     app.installTranslator(translator)
-
+    
     mw = MainWindow()
     mw.show()
+
     sys.exit(app.exec_())
