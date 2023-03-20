@@ -8,7 +8,7 @@ from openpyxl import load_workbook
 from PySide2.QtGui import QPixmap
 from PySide2.QtWidgets import *
 from PySide2 import QtCore
-from PySide2.QtCharts import QtCharts
+from PySide2 import QtCharts
 
 from ui.charts import LineChart, DeviationChart
 from ui.preferencesdialog import Ui_Dialog

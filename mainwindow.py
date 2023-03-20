@@ -7,7 +7,7 @@ from PySide2 import QtCore
 from PySide2.QtCore import QTranslator
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtWidgets import (
-    QApplication, QWidget, QMainWindow, QAction, QHeaderView, QFileDialog, QDialog, QMessageBox)
+    QApplication, QWidget, QMainWindow, QHeaderView, QFileDialog, QDialog, QMessageBox)
 
 from PySide2.QtCharts import QtCharts
 
