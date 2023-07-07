@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import logging
+
 from math import sqrt, pow
 from core.utils import load_data_from_excel
+
+logger = logging.getLogger("findpair")
+
 
 gain_dp = [205, 125, 79, 69, 56, 47, 38, 32, 28, 26,
            25, 24, 22, 20, 19, 16.5, 15.6, 15, 14, 13.5,
@@ -70,6 +75,9 @@ def get_amplifier_pairs(gains, deltas, table):
 
 
 def make_it_beatiful(stg, **extra):
+    logger.debug(">>> running make_it_beatifull()")
+    logger.debug("param: {}".format(locals()))
+
     gains = load_data_from_excel(
         stg['filename'],
         stg['gain']['sheet'],
@@ -86,6 +94,9 @@ def make_it_beatiful(stg, **extra):
     table = RainbowTable(ratios)
 
     normalize_gains = [gain / extra.get('m', 1) for gain in gains]
+
+    logger.debug("\ngains: {}".format(gains))
+    logger.debug("\nraios: {}".format(ratios))
 
     result = get_amplifier_pairs(normalize_gains, extra["tolerance"], table)
 

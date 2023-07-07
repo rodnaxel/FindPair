@@ -19,14 +19,22 @@ from ui.ui_mainwindow import Ui_MainWindow
 from core import findpair
 from core import utils
 
-__ver__ = '1.1'
+__ver__ = '1.2'
+
+
+logging_enable = False
+if os.path.exists("debug.log"):
+    logging_enable = True
 
 logger = logging.getLogger("findpair")
 logger.setLevel(logging.DEBUG)
-fileHandler = logging.FileHandler('errors.log')
-fileHandler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
-logger.addHandler(fileHandler)
 
+if logging_enable:
+    fileHandler = logging.FileHandler('debug.log')
+    fileHandler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
+    logger.addHandler(fileHandler)
+else:
+    logger.disabled = True
 
 # stream_handler = logging.StreamHandler(stream=sys.stdout)
 # stream_handler.setFormatter(logging.Formatter(fmt='[%(asctime)s: %(levelname)s] %(message)s'))
@@ -105,11 +113,13 @@ class MainWindow(QMainWindow):
             self.parameter_changed()
 
     def on_open_preferences(self):
+        logger.debug(">>> open preferences dialog")
         self.open_dialog.show()
 
     def on_save_as(self):
         if not self.model:
             self.ui.statusbar.showMessage("Error: No data for report")
+            logger.warning("No data for report")
             return
 
         filename, _ = QFileDialog.getSaveFileName(
@@ -152,10 +162,12 @@ class MainWindow(QMainWindow):
             df = findpair.make_it_beatiful(
                 self.settings, tolerance=tolerance, m=ratio_m)
         except KeyError:
+            logger.error("Not enough! Please, check settings")
             self.ui.statusbar.showMessage("Not enough! Please, check settings")
             return
 
         if not df:
+            logger.error("No data <df>")
             self.ui.statusbar.showMessage("No data")
             return
 
@@ -182,15 +194,18 @@ class MainWindow(QMainWindow):
         QtCore.QCoreApplication.exit(0)
 
     def source_changed(self):
+        logger.debug("change source file")
         self.ui.calculateButton.setEnabled(True)
 
     def parameter_changed(self):
+        logger.debug("change parameters")
         self.has_changed = True
         if self.is_load:
             self.ui.calculateButton.setEnabled(True)
 
 
 if __name__ == "__main__":
+    logger.debug("\n>>> run programm")
     app = QApplication([])
     
     mw = MainWindow()
